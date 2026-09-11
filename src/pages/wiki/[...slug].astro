@@ -4,10 +4,26 @@ import WikiNote from '../../layouts/WikiNote.astro';
 
 export async function getStaticPaths() {
 	const notes = await getCollection('wiki');
-	return notes.map((note) => ({
-		params: { slug: note.id },
-		props: note,
-	}));
+	const paths = [];
+
+	for (const note of notes) {
+		// 1. Full path (e.g. concepts/multi-agent-orchestration)
+		paths.push({
+			params: { slug: note.id },
+			props: note,
+		});
+
+		// 2. Filename-only alias (e.g. multi-agent-orchestration)
+		const fileName = note.id.split('/').pop();
+		if (fileName && fileName !== note.id) {
+			paths.push({
+				params: { slug: fileName },
+				props: note,
+			});
+		}
+	}
+
+	return paths;
 }
 type Props = CollectionEntry<'wiki'>;
 

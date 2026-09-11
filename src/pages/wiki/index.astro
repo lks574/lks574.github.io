@@ -60,34 +60,45 @@ const allTags = Array.from(
 							<p>아직 등록된 위키 노트가 없습니다.</p>
 						</div>
 					) : (
-						notes.map((note) => (
-							<article class="note-card">
-								<a href={`/wiki/${note.id}/`} class="note-card-inner">
-									<div class="note-card-header">
-										<span class="note-icon">📄</span>
-										<span class="note-id">{note.id}</span>
-									</div>
-									<h2 class="note-title">{note.data.title || note.id}</h2>
-									{note.data.description && (
-										<p class="note-desc">{note.data.description}</p>
-									)}
-									<div class="note-footer">
-										{note.data.tags && note.data.tags.length > 0 && (
-											<div class="note-tags">
-												{note.data.tags.map((tag: string) => (
-													<span class="tag-item">#{tag}</span>
-												))}
-											</div>
+						notes.map((note) => {
+							const folder = note.id.includes('/') ? note.id.split('/')[0] : '';
+							const folderLabels: Record<string, { label: string; icon: string }> = {
+								_mocs: { label: 'MOC (지식지도)', icon: '🗺️' },
+								concepts: { label: 'Concept (개념)', icon: '💡' },
+								tools: { label: 'Tool (도구)', icon: '🛠️' },
+								patterns: { label: 'Pattern (실전패턴)', icon: '⚡' },
+							};
+							const folderInfo = folderLabels[folder] || { label: 'Wiki', icon: '🌿' };
+							const slug = note.id.split('/').pop();
+
+							return (
+								<article class="note-card">
+									<a href={`/wiki/${slug}/`} class="note-card-inner">
+										<div class="note-card-header">
+											<span class="note-badge">{folderInfo.icon} {folderInfo.label}</span>
+										</div>
+										<h2 class="note-title">{note.data.title || slug}</h2>
+										{note.data.description && (
+											<p class="note-desc">{note.data.description}</p>
 										)}
-										{note.data.updatedDate && (
-											<span class="note-date">
-												수정: <FormattedDate date={note.data.updatedDate} />
-											</span>
-										)}
-									</div>
-								</a>
-							</article>
-						))
+										<div class="note-footer">
+											{note.data.tags && note.data.tags.length > 0 && (
+												<div class="note-tags">
+													{note.data.tags.map((tag: string) => (
+														<span class="tag-item">#{tag}</span>
+													))}
+												</div>
+											)}
+											{note.data.updatedDate && (
+												<span class="note-date">
+													수정: <FormattedDate date={note.data.updatedDate} />
+												</span>
+											)}
+										</div>
+									</a>
+								</article>
+							);
+						})
 					)
 				}
 			</div>
@@ -195,13 +206,17 @@ const allTags = Array.from(
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		margin-bottom: 0.5rem;
-		font-size: 0.8rem;
-		color: var(--text-muted);
+		margin-bottom: 0.65rem;
 	}
 
-	.note-id {
-		font-family: ui-monospace, SFMono-Regular, monospace;
+	.note-badge {
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--text-secondary);
+		background-color: var(--bg-secondary);
+		padding: 0.2rem 0.55rem;
+		border-radius: 6px;
+		border: 1px solid var(--border-color);
 	}
 
 	.note-title {
