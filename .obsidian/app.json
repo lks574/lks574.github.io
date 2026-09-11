@@ -1,0 +1,15 @@
+{
+  "userIgnoreFilters": [
+    "^node_modules",
+    "^dist",
+    "^\\.astro",
+    "^\\.git",
+    "^\\.vscode",
+    "^public",
+    "^package-lock\\.json"
+  ],
+  "newFileFolderPath": "src/content/wiki",
+  "useMarkdownLinks": false,
+  "showLineNumber": true,
+  "spellcheck": false
+}

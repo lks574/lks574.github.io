@@ -1,0 +1,259 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const notes = (await getCollection('wiki')).sort((a, b) => {
+	const dateA = a.data.updatedDate ? a.data.updatedDate.valueOf() : 0;
+	const dateB = b.data.updatedDate ? b.data.updatedDate.valueOf() : 0;
+	return dateB - dateA;
+});
+
+// Extract all unique tags
+const allTags = Array.from(
+	new Set(notes.flatMap((n) => n.data.tags || [])),
+).sort();
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`지식 위키 (Digital Garden) | ${SITE_TITLE}`}
+			description="옵시디언으로 축적하는 엔지니어링 세컨드 브레인. 언제든 업데이트되는 기술 개념과 실무 메모를 모아둡니다."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="wiki-hero">
+				<div class="wiki-badge">🌿 Digital Garden & Wiki</div>
+				<h1 class="page-title">지식 위키 (Second Brain)</h1>
+				<p class="page-desc">
+					옵시디언(Obsidian)으로 매일 축적하는 엔지니어링 지식 베이스입니다.
+					완결된 아티클뿐만 아니라, 언제든 살을 붙여나가는 상시 업데이트형 영구 노트(Evergreen Notes)를 모아둡니다.
+				</p>
+			</div>
+
+			<!-- Tags Cloud -->
+			{
+				allTags.length > 0 && (
+					<div class="tags-section">
+						<span class="tags-label">주요 태그:</span>
+						<div class="tag-cloud">
+							{allTags.map((tag) => (
+								<span class="tag-pill">#{tag}</span>
+							))}
+						</div>
+					</div>
+				)
+			}
+
+			<!-- Notes Grid -->
+			<div class="notes-grid">
+				{
+					notes.length === 0 ? (
+						<div class="empty-state">
+							<p>아직 등록된 위키 노트가 없습니다.</p>
+						</div>
+					) : (
+						notes.map((note) => (
+							<article class="note-card">
+								<a href={`/wiki/${note.id}/`} class="note-card-inner">
+									<div class="note-card-header">
+										<span class="note-icon">📄</span>
+										<span class="note-id">{note.id}</span>
+									</div>
+									<h2 class="note-title">{note.data.title || note.id}</h2>
+									{note.data.description && (
+										<p class="note-desc">{note.data.description}</p>
+									)}
+									<div class="note-footer">
+										{note.data.tags && note.data.tags.length > 0 && (
+											<div class="note-tags">
+												{note.data.tags.map((tag: string) => (
+													<span class="tag-item">#{tag}</span>
+												))}
+											</div>
+										)}
+										{note.data.updatedDate && (
+											<span class="note-date">
+												수정: <FormattedDate date={note.data.updatedDate} />
+											</span>
+										)}
+									</div>
+								</a>
+							</article>
+						))
+					)
+				}
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.wiki-hero {
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	.wiki-badge {
+		display: inline-block;
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: #15803d;
+		background-color: #f0fdf4;
+		border: 1px solid #bbf7d0;
+		padding: 0.3rem 0.75rem;
+		border-radius: 9999px;
+		margin-bottom: 1rem;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.wiki-badge {
+			background-color: #052e16;
+			color: #86efac;
+			border-color: #16a34a;
+		}
+	}
+
+	.page-title {
+		font-size: 2.35rem;
+		margin: 0 0 0.75rem 0;
+	}
+
+	.page-desc {
+		color: var(--text-secondary);
+		margin: 0;
+		font-size: 1.05rem;
+		line-height: 1.7;
+	}
+
+	.tags-section {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 2.5rem;
+		flex-wrap: wrap;
+	}
+
+	.tags-label {
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: var(--text-muted);
+	}
+
+	.tag-cloud {
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+	}
+
+	.tag-pill {
+		font-size: 0.82rem;
+		background-color: var(--bg-secondary);
+		padding: 0.25rem 0.6rem;
+		border-radius: 6px;
+		border: 1px solid var(--border-color);
+		color: var(--text-secondary);
+	}
+
+	.notes-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.25rem;
+	}
+
+	.note-card {
+		background-color: var(--bg-card);
+		border: 1px solid var(--border-color);
+		border-radius: 12px;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	}
+
+	.note-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--box-shadow);
+		border-color: var(--accent);
+	}
+
+	.note-card-inner {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 1.5rem;
+		text-decoration: none;
+	}
+
+	.note-card-header {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.5rem;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+
+	.note-id {
+		font-family: ui-monospace, SFMono-Regular, monospace;
+	}
+
+	.note-title {
+		font-size: 1.2rem;
+		margin: 0 0 0.5rem 0;
+		color: var(--text-primary);
+		border-bottom: none;
+		padding-bottom: 0;
+		line-height: 1.35;
+	}
+
+	.note-card:hover .note-title {
+		color: var(--accent);
+	}
+
+	.note-desc {
+		font-size: 0.92rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+		margin: 0 0 1.25rem 0;
+		flex: 1;
+	}
+
+	.note-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		border-top: 1px solid var(--border-color);
+		padding-top: 0.75rem;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.note-tags {
+		display: flex;
+		gap: 0.35rem;
+		flex-wrap: wrap;
+	}
+
+	.tag-item {
+		color: var(--text-muted);
+	}
+
+	.note-date {
+		font-size: 0.78rem;
+	}
+
+	@media (max-width: 640px) {
+		.notes-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

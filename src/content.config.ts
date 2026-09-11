@@ -19,4 +19,16 @@ const blog = defineCollection({
 		}),
 });
 
-export const collections = { blog };
+const wiki = defineCollection({
+	// Load Markdown and MDX files in the `src/content/wiki/` directory.
+	loader: glob({ base: './src/content/wiki', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		title: z.string().optional(),
+		description: z.string().default(''),
+		tags: z.array(z.string()).default([]),
+		category: z.string().default('wiki'),
+		updatedDate: z.coerce.date().optional(),
+	}),
+});
+
+export const collections = { blog, wiki };

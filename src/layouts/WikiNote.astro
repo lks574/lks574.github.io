@@ -1,0 +1,185 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+interface Props {
+	title?: string;
+	description?: string;
+	tags?: string[];
+	updatedDate?: Date;
+}
+
+const { title = 'Wiki Note', description = '', tags = [], updatedDate } = Astro.props;
+---
+
+<html lang="ko">
+	<head>
+		<BaseHead title={`${title} | 지식 위키 - ${SITE_TITLE}`} description={description} />
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article class="wiki-wrapper">
+				<div class="wiki-breadcrumb">
+					<a href="/wiki">&larr; 지식 위키 (Digital Garden)</a>
+				</div>
+
+				<header class="wiki-header">
+					<div class="wiki-type-badge">🌿 Evergreen Note</div>
+					<h1 class="wiki-title">{title}</h1>
+					{description && <p class="wiki-desc">{description}</p>}
+
+					<div class="wiki-meta">
+						{
+							updatedDate && (
+								<span class="wiki-date">
+									최종 업데이트: <FormattedDate date={updatedDate} />
+								</span>
+							)
+						}
+						{
+							tags && tags.length > 0 && (
+								<div class="wiki-tags">
+									{tags.map((tag) => (
+										<span class="wiki-tag">#{tag}</span>
+									))}
+								</div>
+							)
+						}
+					</div>
+				</header>
+
+				<div class="prose wiki-content">
+					<slot />
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.wiki-wrapper {
+		max-width: 760px;
+		margin: 0 auto;
+	}
+
+	.wiki-breadcrumb {
+		margin-bottom: 1.5rem;
+	}
+
+	.wiki-breadcrumb a {
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		font-weight: 500;
+	}
+
+	.wiki-breadcrumb a:hover {
+		color: var(--accent);
+	}
+
+	.wiki-header {
+		margin-bottom: 2.5rem;
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	.wiki-type-badge {
+		display: inline-block;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: #15803d;
+		background-color: #f0fdf4;
+		border: 1px solid #bbf7d0;
+		padding: 0.25rem 0.65rem;
+		border-radius: 9999px;
+		margin-bottom: 1rem;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.wiki-type-badge {
+			background-color: #052e16;
+			color: #86efac;
+			border-color: #16a34a;
+		}
+	}
+
+	.wiki-title {
+		font-size: 2.25rem;
+		line-height: 1.3;
+		margin: 0 0 0.75rem 0;
+		letter-spacing: -0.02em;
+	}
+
+	.wiki-desc {
+		font-size: 1.1rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+		margin: 0 0 1.25rem 0;
+	}
+
+	.wiki-meta {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+	}
+
+	.wiki-tags {
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+	}
+
+	.wiki-tag {
+		font-size: 0.8rem;
+		background-color: var(--bg-secondary);
+		padding: 0.15rem 0.5rem;
+		border-radius: 4px;
+		border: 1px solid var(--border-color);
+	}
+
+	.wiki-content {
+		color: var(--text-primary);
+		font-size: 1.05rem;
+		line-height: 1.85;
+	}
+
+	.wiki-content :global(h2) {
+		margin-top: 2.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.wiki-content :global(h3) {
+		margin-top: 1.75rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.wiki-content :global(p) {
+		margin-bottom: 1.35rem;
+	}
+
+	.wiki-content :global(table) {
+		margin: 1.75rem 0;
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	.wiki-content :global(th),
+	.wiki-content :global(td) {
+		padding: 0.75rem 1rem;
+		border: 1px solid var(--border-color);
+		text-align: left;
+	}
+
+	.wiki-content :global(th) {
+		background-color: var(--bg-secondary);
+		font-weight: 600;
+	}
+</style>

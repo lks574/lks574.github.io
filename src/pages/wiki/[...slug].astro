@@ -1,0 +1,25 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import WikiNote from '../../layouts/WikiNote.astro';
+
+export async function getStaticPaths() {
+	const notes = await getCollection('wiki');
+	return notes.map((note) => ({
+		params: { slug: note.id },
+		props: note,
+	}));
+}
+type Props = CollectionEntry<'wiki'>;
+
+const note = Astro.props;
+const { Content } = await render(note);
+---
+
+<WikiNote
+	title={note.data.title || note.id}
+	description={note.data.description}
+	tags={note.data.tags}
+	updatedDate={note.data.updatedDate}
+>
+	<Content />
+</WikiNote>
