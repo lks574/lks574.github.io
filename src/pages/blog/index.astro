@@ -1,0 +1,201 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { CATEGORIES, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={`아티클 목록 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-header">
+				<h1 class="page-title">모든 아티클</h1>
+				<p class="page-desc">
+					커리어 전환, AI 도구 워크플로우, 시장 트렌드, 실전 팁에 관한 아티클 모음입니다.
+				</p>
+			</div>
+
+			<!-- Category Filter Pills -->
+			<div class="category-filter">
+				<a href="/blog" class="filter-pill active">전체 ({posts.length})</a>
+				{
+					Object.values(CATEGORIES).map((cat) => {
+						const count = posts.filter((p) => p.data.category === cat.slug).length;
+						return (
+							<a href={`/category/${cat.slug}`} class="filter-pill">
+								{cat.icon} {cat.name} ({count})
+							</a>
+						);
+					})
+				}
+			</div>
+
+			<!-- Posts List -->
+			<div class="post-grid">
+				{
+					posts.map((post) => {
+						const catInfo = CATEGORIES[post.data.category] || {
+							name: post.data.category,
+							slug: post.data.category,
+						};
+						return (
+							<article class="post-card">
+								<a href={`/blog/${post.id}/`} class="post-card-inner">
+									<div class="post-header">
+										<span class={`badge badge-${post.data.category}`}>
+											{catInfo.name}
+										</span>
+										<span class="post-date">
+											<FormattedDate date={post.data.pubDate} />
+										</span>
+									</div>
+									<h2 class="post-title">{post.data.title}</h2>
+									<p class="post-desc">{post.data.description}</p>
+									{post.data.tags && post.data.tags.length > 0 && (
+										<div class="post-tags">
+											{post.data.tags.map((tag: string) => (
+												<span class="tag">#{tag}</span>
+											))}
+										</div>
+									)}
+								</a>
+							</article>
+						);
+					})
+				}
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page-header {
+		margin-bottom: 2rem;
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	.page-title {
+		font-size: 2.25rem;
+		margin: 0 0 0.5rem 0;
+	}
+
+	.page-desc {
+		color: var(--text-secondary);
+		margin: 0;
+		font-size: 1.05rem;
+	}
+
+	.category-filter {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.filter-pill {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.45rem 0.9rem;
+		border-radius: 9999px;
+		font-size: 0.88rem;
+		font-weight: 500;
+		background-color: var(--bg-secondary);
+		color: var(--text-secondary);
+		border: 1px solid var(--border-color);
+		transition: all 0.15s ease;
+		text-decoration: none;
+	}
+
+	.filter-pill:hover {
+		background-color: var(--border-color);
+		color: var(--text-primary);
+	}
+
+	.filter-pill.active {
+		background-color: var(--accent);
+		color: white;
+		border-color: var(--accent);
+	}
+
+	.post-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.post-card {
+		background-color: var(--bg-card);
+		border: 1px solid var(--border-color);
+		border-radius: 12px;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	}
+
+	.post-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--box-shadow);
+		border-color: var(--accent);
+	}
+
+	.post-card-inner {
+		display: block;
+		padding: 1.75rem;
+		text-decoration: none;
+	}
+
+	.post-header {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.post-date {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+	}
+
+	.post-title {
+		font-size: 1.4rem;
+		margin: 0 0 0.65rem 0;
+		color: var(--text-primary);
+		border-bottom: none;
+		padding-bottom: 0;
+		line-height: 1.35;
+	}
+
+	.post-card:hover .post-title {
+		color: var(--accent);
+	}
+
+	.post-desc {
+		font-size: 0.98rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+		margin: 0 0 1rem 0;
+	}
+
+	.post-tags {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.tag {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+</style>
+

@@ -1,0 +1,251 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { AUTHOR_NAME, CATEGORIES, SITE_TITLE } from '../consts';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, heroImage, category = 'General', tags = [] } = Astro.props;
+const catInfo = CATEGORIES[category] || { name: category, slug: category, icon: '📌' };
+---
+
+<html lang="ko">
+	<head>
+		<BaseHead title={`${title} | ${SITE_TITLE}`} description={description} />
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article class="article-wrapper">
+				<div class="back-link">
+					<a href="/blog">&larr; 전체 아티클 목록</a>
+				</div>
+
+				<header class="article-header">
+					<div class="article-meta">
+						<a href={`/category/${catInfo.slug}`} class={`badge badge-${category}`}>
+							{catInfo.name}
+						</a>
+						<span class="meta-separator">•</span>
+						<span class="article-date">
+							<FormattedDate date={pubDate} />
+						</span>
+						{
+							updatedDate && (
+								<span class="last-updated">
+									(수정: <FormattedDate date={updatedDate} />)
+								</span>
+							)
+						}
+					</div>
+
+					<h1 class="article-title">{title}</h1>
+					<p class="article-desc">{description}</p>
+
+					{
+						tags && tags.length > 0 && (
+							<div class="article-tags">
+								{tags.map((tag: string) => (
+									<span class="tag">#{tag}</span>
+								))}
+							</div>
+						)
+					}
+				</header>
+
+				{
+					heroImage && (
+						<div class="hero-image">
+							<Image width={960} height={480} src={heroImage} alt={title} />
+						</div>
+					)
+				}
+
+				<div class="prose">
+					<slot />
+				</div>
+
+				<!-- Author Bio Box -->
+				<div class="author-box">
+					<div class="author-avatar">👨‍💻</div>
+					<div class="author-info">
+						<h4 class="author-name">{AUTHOR_NAME}</h4>
+						<p class="author-bio">
+							iOS 개발자에서 Product Engineer로 전환하며, 비즈니스와 AI 에이전트를 결합해
+							임팩트 있는 프로덕트를 만들어가고 있습니다.
+						</p>
+					</div>
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.article-wrapper {
+		max-width: 760px;
+		margin: 0 auto;
+	}
+
+	.back-link {
+		margin-bottom: 1.5rem;
+	}
+
+	.back-link a {
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		font-weight: 500;
+	}
+
+	.back-link a:hover {
+		color: var(--accent);
+	}
+
+	.article-header {
+		margin-bottom: 2.5rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	.article-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin-bottom: 1rem;
+		font-size: 0.88rem;
+	}
+
+	.meta-separator {
+		color: var(--text-muted);
+	}
+
+	.article-date {
+		color: var(--text-muted);
+	}
+
+	.last-updated {
+		color: var(--text-muted);
+		font-size: 0.82rem;
+	}
+
+	.article-title {
+		font-size: 2.35rem;
+		line-height: 1.3;
+		margin: 0 0 1rem 0;
+		letter-spacing: -0.025em;
+	}
+
+	.article-desc {
+		font-size: 1.15rem;
+		color: var(--text-secondary);
+		line-height: 1.65;
+		margin: 0 0 1.25rem 0;
+	}
+
+	.article-tags {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.tag {
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		background-color: var(--bg-secondary);
+		padding: 0.2rem 0.6rem;
+		border-radius: 4px;
+		border: 1px solid var(--border-color);
+	}
+
+	.hero-image {
+		margin-bottom: 2.5rem;
+	}
+
+	.hero-image img {
+		width: 100%;
+		border-radius: 12px;
+		box-shadow: var(--box-shadow);
+	}
+
+	.prose {
+		color: var(--text-primary);
+		font-size: 1.08rem;
+		line-height: 1.85;
+	}
+
+	.prose :global(h2) {
+		margin-top: 2.75rem;
+		margin-bottom: 1rem;
+		padding-bottom: 0.4rem;
+	}
+
+	.prose :global(h3) {
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.prose :global(p) {
+		margin-bottom: 1.5rem;
+	}
+
+	.prose :global(ul),
+	.prose :global(ol) {
+		margin-bottom: 1.5rem;
+	}
+
+	.prose :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.author-box {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		margin-top: 3.5rem;
+		padding: 1.75rem;
+		background-color: var(--bg-secondary);
+		border-radius: 12px;
+		border: 1px solid var(--border-color);
+	}
+
+	.author-avatar {
+		font-size: 2.5rem;
+		background-color: var(--bg-primary);
+		padding: 0.75rem;
+		border-radius: 50%;
+		border: 1px solid var(--border-color);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+	}
+
+	.author-name {
+		font-size: 1.15rem;
+		margin: 0 0 0.35rem 0;
+	}
+
+	.author-bio {
+		font-size: 0.92rem;
+		color: var(--text-secondary);
+		margin: 0;
+		line-height: 1.55;
+	}
+
+	@media (max-width: 640px) {
+		.article-title {
+			font-size: 1.85rem;
+		}
+		.author-box {
+			flex-direction: column;
+			text-align: center;
+		}
+	}
+</style>
+

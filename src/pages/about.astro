@@ -1,0 +1,228 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={`소개 (About) | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="about-container">
+				<header class="about-header">
+					<div class="avatar-emoji">👨‍💻</div>
+					<h1 class="about-title">{AUTHOR_NAME}</h1>
+					<p class="about-role">Product Engineer (ex-iOS Engineer) • AI Enthusiast</p>
+				</header>
+
+				<section class="about-section">
+					<h2>👋 소개합니다</h2>
+					<p>
+						안녕하세요! <strong>{SITE_TITLE}</strong>를 운영하고 있는 {AUTHOR_NAME}입니다.
+					</p>
+					<p>
+						저는 수년간 Swift와 iOS 네이티브 생태계에서 모바일 앱을 개발해왔습니다.
+						매끄러운 UI/UX와 정교한 아키텍처를 구현하는 일에 열정을 쏟았지만, 기술의 변화와 프로덕트의 본질을 고민하며
+						<strong>Product Engineer(PE)</strong>로 커리어의 지평을 넓히게 되었습니다.
+					</p>
+				</section>
+
+				<section class="about-section">
+					<h2>🚀 왜 Product Engineer(PE)인가?</h2>
+					<p>
+						개발자의 가치는 단순히 "코드를 잘 짜는 것"에만 머물지 않는다고 느꼈습니다.
+						진짜 가치는 <strong>"사용자의 문제를 가장 빠르고 우아하게 해결하여 비즈니스 임팩트를 만드는 것"</strong>에 있습니다.
+					</p>
+					<ul>
+						<li><strong>클라이언트의 한계를 넘어:</strong> 프론트엔드, 백엔드, 인프라, 그리고 데이터 지표까지 프로덕트 라이프사이클 전체를 조망합니다.</li>
+						<li><strong>문제 중심의 사고:</strong> 특정 언어나 프레임워크에 매몰되지 않고, 문제를 푸는 가장 효율적인 기술을 선택합니다.</li>
+						<li><strong>비즈니스 임팩트:</strong> 코드 퀄리티만큼이나 제품의 전환율, 리텐션, 사용자 피드백에 민감하게 반응합니다.</li>
+					</ul>
+				</section>
+
+				<section class="about-section">
+					<h2>🤖 AI 시대, 개발자로 살아남기</h2>
+					<p>
+						생성형 AI와 AI 코딩 에이전트(Claude, GPT, Cursor 등)의 등장은 소프트웨어 개발의 패러다임을 뿌리째 흔들고 있습니다.
+						보일러플레이트 코드 작성과 단순 기능 구현은 이미 AI가 인간보다 빠릅니다.
+					</p>
+					<p>
+						이 변화 속에서 우리는 어떻게 살아남아야 할까요?
+					</p>
+					<p>
+						답은 <strong>"AI를 가장 강력한 레버리지로 삼는 엔지니어"</strong>가 되는 것입니다.
+						AI 에이전트에게 맥락을 제공하고, 구조를 설계하며, 빠른 프로토타이핑을 통해 가설을 검증하는 역량이야말로
+						새로운 시대의 핵심 경쟁력입니다.
+					</p>
+				</section>
+
+				<section class="about-section">
+					<h2>📝 이 블로그에서 다루는 이야기</h2>
+					<div class="topic-list">
+						<div class="topic-item">
+							<span class="topic-icon">🚀</span>
+							<div>
+								<strong>커리어 전환기:</strong> iOS 개발자에서 PE로 전환하며 겪은 시행착오와 성장 기록
+							</div>
+						</div>
+						<div class="topic-item">
+							<span class="topic-icon">🤖</span>
+							<div>
+								<strong>AI 에이전트 워크플로우:</strong> 실무에서 AI를 페어 프로그래밍 동료로 활용하는 실전 방법
+							</div>
+						</div>
+						<div class="topic-item">
+							<span class="topic-icon">📈</span>
+							<div>
+								<strong>시장 분석 & 트렌드:</strong> 급변하는 개발자 채용 시장과 테크 산업의 생존 전략
+							</div>
+						</div>
+						<div class="topic-item">
+							<span class="topic-icon">💡</span>
+							<div>
+								<strong>실전 엔지니어링 팁:</strong> 속도와 완성도를 모두 잡는 개발 생산성 노하우
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="about-section connect-section">
+					<h2>💬 소통하기</h2>
+					<p>
+						질문, 피드백, 혹은 커피챗 제안은 언제든 환영합니다!
+					</p>
+					<div class="contact-links">
+						<a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact-btn">
+							GitHub 방문하기
+						</a>
+						<a href="mailto:lks574@naver.com" class="contact-btn">
+							이메일 보내기
+						</a>
+					</div>
+				</section>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.about-container {
+		max-width: 760px;
+		margin: 0 auto;
+	}
+
+	.about-header {
+		text-align: center;
+		padding: 2rem 0 3rem 0;
+		border-bottom: 1px solid var(--border-color);
+		margin-bottom: 3rem;
+	}
+
+	.avatar-emoji {
+		font-size: 4rem;
+		margin-bottom: 1rem;
+		display: inline-block;
+		background-color: var(--bg-secondary);
+		padding: 1rem;
+		border-radius: 50%;
+		border: 1px solid var(--border-color);
+		line-height: 1;
+	}
+
+	.about-title {
+		font-size: 2.25rem;
+		margin: 0 0 0.5rem 0;
+	}
+
+	.about-role {
+		font-size: 1.15rem;
+		color: var(--text-muted);
+		margin: 0;
+		font-weight: 500;
+	}
+
+	.about-section {
+		margin-bottom: 3.5rem;
+	}
+
+	.about-section h2 {
+		font-size: 1.5rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.about-section p {
+		font-size: 1.05rem;
+		line-height: 1.8;
+	}
+
+	.topic-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+
+	.topic-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+		padding: 1.25rem;
+		background-color: var(--bg-card);
+		border: 1px solid var(--border-color);
+		border-radius: 10px;
+		font-size: 0.98rem;
+		line-height: 1.6;
+	}
+
+	.topic-icon {
+		font-size: 1.5rem;
+		line-height: 1;
+	}
+
+	.connect-section {
+		padding: 2rem;
+		background-color: var(--bg-secondary);
+		border-radius: 12px;
+		border: 1px solid var(--border-color);
+		text-align: center;
+	}
+
+	.connect-section h2 {
+		border-bottom: none;
+		padding-bottom: 0;
+		margin-top: 0;
+	}
+
+	.contact-links {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		margin-top: 1.5rem;
+		flex-wrap: wrap;
+	}
+
+	.contact-btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.65rem 1.3rem;
+		border-radius: 8px;
+		font-size: 0.92rem;
+		font-weight: 600;
+		background-color: var(--accent);
+		color: white;
+		text-decoration: none;
+		transition: background-color 0.15s ease;
+	}
+
+	.contact-btn:hover {
+		background-color: var(--accent-hover);
+		color: white;
+	}
+</style>
+
