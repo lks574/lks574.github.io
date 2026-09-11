@@ -23,7 +23,24 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# obsidian local cache and workspace
+# obsidian vault settings & cache
 .obsidian/workspace.json
+.obsidian/workspace-mobile.json
 .obsidian/cache/
+.obsidian/graph.json
+.obsidian/sync.json
+.trash/
+
+# ignore obsidian workspace/cache in any subfolders (e.g. src/content/wiki/.obsidian)
+**/.obsidian/workspace.json
+**/.obsidian/workspace-mobile.json
+**/.obsidian/cache/
+**/.trash/
+src/content/wiki/.obsidian/
+
+# obsidian plugins vector embeddings & large cache
+**/.obsidian/plugins/*/.vectors/
+**/.obsidian/plugins/**/cache/
+
+
 
