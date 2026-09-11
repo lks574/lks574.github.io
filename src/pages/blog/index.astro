@@ -44,35 +44,42 @@ const posts = (await getCollection('blog')).sort(
 			<!-- Posts List -->
 			<div class="post-grid">
 				{
-					posts.map((post) => {
-						const catInfo = CATEGORIES[post.data.category] || {
-							name: post.data.category,
-							slug: post.data.category,
-						};
-						return (
-							<article class="post-card">
-								<a href={`/blog/${post.id}/`} class="post-card-inner">
-									<div class="post-header">
-										<span class={`badge badge-${post.data.category}`}>
-											{catInfo.name}
-										</span>
-										<span class="post-date">
-											<FormattedDate date={post.data.pubDate} />
-										</span>
-									</div>
-									<h2 class="post-title">{post.data.title}</h2>
-									<p class="post-desc">{post.data.description}</p>
-									{post.data.tags && post.data.tags.length > 0 && (
-										<div class="post-tags">
-											{post.data.tags.map((tag: string) => (
-												<span class="tag">#{tag}</span>
-											))}
+					posts.length === 0 ? (
+						<div class="empty-state">
+							<p class="empty-text">✍️ 아직 등록된 아티클이 없습니다.</p>
+							<p class="empty-subtext">새 글을 작성하면 이곳에 목록이 표시됩니다.</p>
+						</div>
+					) : (
+						posts.map((post) => {
+							const catInfo = CATEGORIES[post.data.category] || {
+								name: post.data.category,
+								slug: post.data.category,
+							};
+							return (
+								<article class="post-card">
+									<a href={`/blog/${post.id}/`} class="post-card-inner">
+										<div class="post-header">
+											<span class={`badge badge-${post.data.category}`}>
+												{catInfo.name}
+											</span>
+											<span class="post-date">
+												<FormattedDate date={post.data.pubDate} />
+											</span>
 										</div>
-									)}
-								</a>
-							</article>
-						);
-					})
+										<h2 class="post-title">{post.data.title}</h2>
+										<p class="post-desc">{post.data.description}</p>
+										{post.data.tags && post.data.tags.length > 0 && (
+											<div class="post-tags">
+												{post.data.tags.map((tag: string) => (
+													<span class="tag">#{tag}</span>
+												))}
+											</div>
+										)}
+									</a>
+								</article>
+							);
+						})
+					)
 				}
 			</div>
 		</main>
@@ -196,6 +203,27 @@ const posts = (await getCollection('blog')).sort(
 	.tag {
 		font-size: 0.8rem;
 		color: var(--text-muted);
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3.5rem 1.5rem;
+		background-color: var(--bg-secondary);
+		border-radius: 12px;
+		border: 1px dashed var(--border-color);
+	}
+
+	.empty-text {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 0.5rem;
+	}
+
+	.empty-subtext {
+		font-size: 0.95rem;
+		color: var(--text-muted);
+		margin: 0;
 	}
 </style>
 

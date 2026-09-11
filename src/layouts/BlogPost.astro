@@ -5,7 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { AUTHOR_NAME, CATEGORIES, SITE_TITLE } from '../consts';
+import { CATEGORIES, SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -68,18 +68,6 @@ const catInfo = CATEGORIES[category] || { name: category, slug: category, icon: 
 
 				<div class="prose">
 					<slot />
-				</div>
-
-				<!-- Author Bio Box -->
-				<div class="author-box">
-					<div class="author-avatar">👨‍💻</div>
-					<div class="author-info">
-						<h4 class="author-name">{AUTHOR_NAME}</h4>
-						<p class="author-bio">
-							iOS 개발자에서 Product Engineer로 전환하며, 비즈니스와 AI 에이전트를 결합해
-							임팩트 있는 프로덕트를 만들어가고 있습니다.
-						</p>
-					</div>
 				</div>
 			</article>
 		</main>
@@ -203,48 +191,9 @@ const catInfo = CATEGORIES[category] || { name: category, slug: category, icon: 
 		margin-bottom: 0.5rem;
 	}
 
-	.author-box {
-		display: flex;
-		align-items: center;
-		gap: 1.25rem;
-		margin-top: 3.5rem;
-		padding: 1.75rem;
-		background-color: var(--bg-secondary);
-		border-radius: 12px;
-		border: 1px solid var(--border-color);
-	}
-
-	.author-avatar {
-		font-size: 2.5rem;
-		background-color: var(--bg-primary);
-		padding: 0.75rem;
-		border-radius: 50%;
-		border: 1px solid var(--border-color);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		line-height: 1;
-	}
-
-	.author-name {
-		font-size: 1.15rem;
-		margin: 0 0 0.35rem 0;
-	}
-
-	.author-bio {
-		font-size: 0.92rem;
-		color: var(--text-secondary);
-		margin: 0;
-		line-height: 1.55;
-	}
-
 	@media (max-width: 640px) {
 		.article-title {
 			font-size: 1.85rem;
-		}
-		.author-box {
-			flex-direction: column;
-			text-align: center;
 		}
 	}
 </style>

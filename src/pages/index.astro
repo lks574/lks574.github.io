@@ -65,35 +65,42 @@ const recentPosts = posts.slice(0, 4);
 				</div>
 				<div class="post-list">
 					{
-						recentPosts.map((post) => {
-							const catInfo = CATEGORIES[post.data.category] || {
-								name: post.data.category,
-								slug: post.data.category,
-							};
-							return (
-								<article class="post-card">
-									<a href={`/blog/${post.id}/`} class="post-card-link">
-										<div class="post-meta">
-											<span class={`badge badge-${post.data.category}`}>
-												{catInfo.name}
-											</span>
-											<span class="post-date">
-												<FormattedDate date={post.data.pubDate} />
-											</span>
-										</div>
-										<h3 class="post-title">{post.data.title}</h3>
-										<p class="post-description">{post.data.description}</p>
-										{post.data.tags && post.data.tags.length > 0 && (
-											<div class="post-tags">
-												{post.data.tags.map((tag: string) => (
-													<span class="tag">#{tag}</span>
-												))}
+						recentPosts.length === 0 ? (
+							<div class="empty-state">
+								<p class="empty-text">✍️ 아직 작성된 아티클이 없습니다.</p>
+								<p class="empty-subtext">첫 번째 글을 작성하면 이곳에 자동으로 표시됩니다!</p>
+							</div>
+						) : (
+							recentPosts.map((post) => {
+								const catInfo = CATEGORIES[post.data.category] || {
+									name: post.data.category,
+									slug: post.data.category,
+								};
+								return (
+									<article class="post-card">
+										<a href={`/blog/${post.id}/`} class="post-card-link">
+											<div class="post-meta">
+												<span class={`badge badge-${post.data.category}`}>
+													{catInfo.name}
+												</span>
+												<span class="post-date">
+													<FormattedDate date={post.data.pubDate} />
+												</span>
 											</div>
-										)}
-									</a>
-								</article>
-							);
-						})
+											<h3 class="post-title">{post.data.title}</h3>
+											<p class="post-description">{post.data.description}</p>
+											{post.data.tags && post.data.tags.length > 0 && (
+												<div class="post-tags">
+													{post.data.tags.map((tag: string) => (
+														<span class="tag">#{tag}</span>
+													))}
+												</div>
+											)}
+										</a>
+									</article>
+								);
+							})
+						)
 					}
 				</div>
 			</section>
@@ -329,6 +336,27 @@ const recentPosts = posts.slice(0, 4);
 		.category-grid {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3rem 1.5rem;
+		background-color: var(--bg-secondary);
+		border-radius: 12px;
+		border: 1px dashed var(--border-color);
+	}
+
+	.empty-text {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 0.5rem;
+	}
+
+	.empty-subtext {
+		font-size: 0.95rem;
+		color: var(--text-muted);
+		margin: 0;
 	}
 </style>
 
