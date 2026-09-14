@@ -1,49 +1,28 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import WikiNote from '../../layouts/WikiNote.astro';
+import { getBacklinks, getNoteIndex, noteKey, type AnyEntry, type GlossaryEntry } from '../../lib/wiki-links';
 
-type WikiEntry = CollectionEntry<'wiki'>;
-type GlossaryEntry = CollectionEntry<'glossary'>;
-type Props = { entry: WikiEntry; kind: 'wiki' } | { entry: GlossaryEntry; kind: 'glossary' };
+type Props = AnyEntry;
 
 export async function getStaticPaths() {
-	const wikiNotes = await getCollection('wiki');
-	const glossaryTerms = await getCollection('glossary');
-
-	// slug -> props. First writer wins, so glossary is registered first:
-	// a bare `[[rag]]` must resolve to the glossary term even if a wiki note
-	// with the same filename appears later.
-	const paths = new Map<string, Props>();
-	const claim = (slug: string, props: Props) => {
-		if (paths.has(slug)) {
-			const prev = paths.get(slug)!;
+	// Every name that a wikilink can resolve to becomes a page. The index is the
+	// single source of the resolution rule, shared with backlink computation.
+	const index = await getNoteIndex();
+	const seen = new Map<string, string>(); // slug -> key (collision guard)
+	const paths: { params: { slug: string }; props: Props }[] = [];
+	for (const [name, ref] of index.byName) {
+		const prev = seen.get(name);
+		if (prev && prev !== ref.key) {
 			// Silently dropping a note is how knowledge gets lost at scale.
 			// scripts/lint-glossary.mjs reports the same condition as an error.
-			throw new Error(
-				`[wiki routes] slug collision on "/wiki/${slug}": ${prev.kind}:${prev.entry.id} vs ${props.kind}:${props.entry.id}. Rename one file.`,
-			);
+			throw new Error(`[wiki routes] slug collision on "/wiki/${name}": ${prev} vs ${ref.key}. Rename one file.`);
 		}
-		paths.set(slug, props);
-	};
-
-	for (const entry of glossaryTerms) {
-		const props: Props = { entry, kind: 'glossary' };
-		// Canonical: /wiki/glossary/ai/rag
-		claim(`glossary/${entry.id}`, props);
-		// Bare alias for wikilinks: /wiki/rag
-		claim(entry.id.split('/').pop()!, props);
+		seen.set(name, ref.key);
+		const found = index.entries.find((e) => noteKey(e.kind, e.entry.id) === ref.key)!;
+		paths.push({ params: { slug: name }, props: found });
 	}
-
-	for (const entry of wikiNotes) {
-		const props: Props = { entry, kind: 'wiki' };
-		// Full path (e.g. concepts/multi-agent-orchestration)
-		claim(entry.id, props);
-		// Filename-only alias (e.g. multi-agent-orchestration)
-		const fileName = entry.id.split('/').pop();
-		if (fileName && fileName !== entry.id) claim(fileName, props);
-	}
-
-	return Array.from(paths, ([slug, props]) => ({ params: { slug }, props }));
+	return paths;
 }
 
 const { entry, kind } = Astro.props;
@@ -52,6 +31,7 @@ const { Content } = await render(entry);
 const glossaryData = kind === 'glossary' ? (entry as GlossaryEntry).data : undefined;
 // Bare-slug aliases (/wiki/rag) point search engines at the canonical path.
 const canonicalPath = kind === 'glossary' ? `/wiki/glossary/${entry.id}/` : `/wiki/${entry.id}/`;
+const backlinks = (await getBacklinks()).get(noteKey(kind, entry.id)) ?? [];
 ---
 
 <WikiNote
@@ -65,6 +45,7 @@ const canonicalPath = kind === 'glossary' ? `/wiki/glossary/${entry.id}/` : `/wi
 	aliases={glossaryData?.aliases}
 	sources={glossaryData?.sources}
 	supersededBy={glossaryData?.supersededBy}
+	backlinks={backlinks}
 >
 	<Content />
 </WikiNote>

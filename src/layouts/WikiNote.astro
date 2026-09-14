@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
+import type { NoteRef } from '../lib/wiki-links';
 
 interface Props {
 	title?: string;
@@ -16,6 +17,7 @@ interface Props {
 	aliases?: string[];
 	sources?: string[];
 	supersededBy?: string;
+	backlinks?: NoteRef[];
 }
 
 const {
@@ -29,7 +31,15 @@ const {
 	aliases = [],
 	sources = [],
 	supersededBy,
+	backlinks = [],
 } = Astro.props;
+
+const kindLabel: Record<NoteRef['kind'], string> = {
+	decision: '설계 기록',
+	concept: '개념',
+	glossary: '용어집',
+	other: '위키',
+};
 
 const categoryLabel: Record<string, string> = {
 	ai: '🤖 AI & LLM',
@@ -122,6 +132,24 @@ const badge = isGlossary ? `📖 ${categoryLabel[category ?? ''] ?? 'Glossary'}`
 						</footer>
 					)
 				}
+				{
+					backlinks.length > 0 && (
+						<section class="wiki-backlinks" aria-label="이 노트를 참조하는 노트">
+							<h2>🔁 이 노트를 참조하는 노트</h2>
+							<ul>
+								{backlinks.map((b) => (
+									<li>
+										<a href={b.href}>{b.title}</a>
+										<span class="backlink-kind">
+											{kindLabel[b.kind]}
+											{b.kind === 'glossary' && b.category ? ` · ${categoryLabel[b.category] ?? b.category}` : ''}
+										</span>
+									</li>
+								))}
+							</ul>
+						</section>
+					)
+				}
 			</article>
 		</main>
 		<Footer />
@@ -158,6 +186,28 @@ const badge = isGlossary ? `📖 ${categoryLabel[category ?? ''] ?? 'Glossary'}`
 		padding-top: 1.25rem;
 		border-top: 1px solid var(--border-color);
 		font-size: 0.9rem;
+	}
+
+	.wiki-backlinks {
+		margin-top: 2rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--border-color);
+		font-size: 0.9rem;
+	}
+
+	.wiki-backlinks h2 {
+		font-size: 1rem;
+		margin: 0 0 0.5rem;
+	}
+
+	.wiki-backlinks li {
+		margin: 0.25rem 0;
+	}
+
+	.backlink-kind {
+		margin-left: 0.5rem;
+		color: var(--text-muted);
+		font-size: 0.8rem;
 	}
 
 	.wiki-sources h2 {
