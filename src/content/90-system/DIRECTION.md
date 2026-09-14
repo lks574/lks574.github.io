@@ -96,3 +96,4 @@ updatedDate: 2026-09-14
 | 2026-09-14 | 파이프라인 첫 완주(wiki-backlinks): PRD→AC→Spec→구현→결정→QA→리뷰. 부수로 대문자 파일명 프로덕션 404 발견·수정 | 스킬 빈틈 3건 기록(`docs/wiki-backlinks/review.md`) |
 | 2026-09-14 | 파이프라인 두 번째 완주(promotion-candidates). **리뷰를 Antigravity에 위임**해 지적 6건 수용. 승격 대기 건수가 린트에 표시됨 | Claude 메인·Antigravity 서브의 첫 실증. 자기 리뷰가 놓치는 결함(사실 오류 결정 기록, 허위 통과 테스트)을 독립 리뷰가 잡음 |
 | 2026-09-15 | 🧭 보유 10/14. AI 용어 4개는 Orca 운영 기록(tools/agents)에서, lead-time은 사용자 진술에서 승격. feature-flag·agentic-rag·jsi·fabric은 경험 없음으로 비워 둠 | 지어내지 않는다는 원칙. agentic-rag는 도입 예정이라 도입 후 채움 |
+| 2026-09-15 | **블라인드 재평가**(브리프 없이 저장소만): Claude 34/50 (+4), Antigravity 37/50 (+4). 두 평가자가 추론한 목표가 헌장 1절과 일치 | 공통 지적: 블로그 category 라우트 404, 에이전트가 참조하는 스킬이 패키지에 없음, npm test가 CI 게이트가 아님, README 낡음, 개념 노트와 결정 노트의 스택 권고 상충 |
