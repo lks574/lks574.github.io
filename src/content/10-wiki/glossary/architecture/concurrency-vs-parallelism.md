@@ -4,7 +4,8 @@ description: "다수의 작업을 다루는 구조적 방식(Concurrency)과 실
 category: "architecture"
 tags: ["architecture", "concurrency", "parallelism", "threading", "performance"]
 aliases: ["Concurrency", "Parallelism", "동시성", "병렬성"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-14
+sources: ["tools/ios/background-video-upload-design"]
 ---
 
 ## 💡 핵심 정의
@@ -22,5 +23,11 @@ updatedDate: 2026-09-11
 - **I/O Bound 작업:** 대기 시간이 대부분이므로 비동기 논블로킹(Async/Await, 이벤트 루프)을 통한 **동시성** 확보가 최적의 처리량을 냅니다.
 - **CPU Bound 작업:** 대규모 데이터 가공, 이미지/비디오 인코딩 등은 멀티 프로세싱이나 워커 스레드 풀을 통한 **병렬성** 확보가 필수적입니다.
 
+## 🧭 내 실무 판단 & 사례
+- **동시성은 actor로, 병렬성은 I/O 개수로 분리했다.** 업로드 상태 머신은 Swift `actor` 하나가 소유해 UI, 백그라운드 깨어남 콜백, 재시도 타이머가 여러 스레드에서 들어와도 상태가 깨지지 않게 했다. 병렬성은 그 밖에서 S3 파트 전송 연결 수(호스트당 8개, 큐 깊이 32)로만 조절했다. 두 질문을 한 곳에서 풀려고 하면 락과 큐가 뒤섞인다.
+- **동시 세션은 1개로 직렬화.** 서버의 세션 상한과 취소 중 새 세션 생성 충돌을 겪고 나서, 세션 수준 동시성은 포기하고 세션 안의 파트 병렬성만 남겼다. 사용자 체감 속도는 후자가 결정한다.
+- **`AsyncStream`은 단일 소비자다.** RN 브릿지와 네이티브 화면이 스트림 하나를 나눠 소비하다가 RN 진행률이 멈췄다. 구독자마다 독립 스트림을 발급하는 브로드캐스터로 바꿨다. 동시성 프리미티브의 소비자 수 제약은 문서에 있지만 한 번 겪어야 몸에 남는다.
+- 상세: [[tools/ios/background-video-upload-design|대용량 영상 백그라운드 업로드 설계 결정]]
+
 ## 🔗 연관 개념
-- [[idempotency]] · [[jsi]] · [[tools/react-native/architecture|React Native 3스레드 아키텍처]]
+- [[idempotency]] · [[swift-concurrency]] · [[jsi]] · [[tools/react-native/architecture|React Native 3스레드 아키텍처]]

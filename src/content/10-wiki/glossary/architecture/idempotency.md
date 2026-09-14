@@ -4,7 +4,8 @@ description: "동일한 연산이나 API 요청을 여러 번 연속해서 수�
 category: "architecture"
 tags: ["architecture", "api", "distributed-systems", "backend"]
 aliases: ["Idempotency", "Idempotent", "멱등성"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-14
+sources: ["tools/ios/background-video-upload-design"]
 ---
 
 ## 💡 핵심 정의
@@ -20,6 +21,12 @@ updatedDate: 2026-09-11
 ## ⚙️ 동작 원리 & 메커니즘
 - **HTTP 메서드 규격:** `GET`, `PUT`, `DELETE`는 표준상 멱등해야 하며, `POST`는 일반적으로 비멱등합니다.
 - **Idempotency Key 기법:** 클라이언트가 각 요청마다 고유한 UUID(`Idempotency-Key` 헤더)를 발급하여 서버로 전달합니다. 서버는 Redis나 RDB에 해당 키의 처리 상태와 응답을 캐싱해 두고, 동일한 키로 요청이 다시 오면 실제 비즈니스 로직을 재실행하지 않고 저장된 결과를 즉시 반환합니다.
+
+## 🧭 내 실무 판단 & 사례
+- **대용량 영상 백그라운드 업로드 재개.** 앱 강제 종료 뒤 이어올리기에서 "이미 올린 파트"를 판별할 진실 원천이 하나로는 부족했다. 로컬 영속 완료 목록, 서버의 완료 상태에서 손상 파트를 뺀 것, 시스템 데몬이 아직 들고 있는 in-flight 태스크를 합쳐서 재전송 대상을 정해야 중복도 누락도 사라졌다. 멱등성은 "키 하나"가 아니라 "누가 진실을 아는가"의 문제였다.
+- **영상 해시를 중복 제출 키로 사용.** 첨부 직후 스트리밍 해시를 계산해 같은 영상의 재제출을 클라이언트에서 먼저 막았다. 서버에도 같은 규칙이 있지만 왕복 비용을 아끼고 사용자에게 즉시 알려주는 쪽이 옳았다.
+- **생성 직후 실패에는 보상 동작.** 서버 세션을 만든 뒤 로컬 저장이 실패하면 서버 세션을 삭제하고 에러를 던진다. 유령 세션이 서버 상한에 걸려 다음 시도를 막는 것을 겪고 나서 넣은 규칙이다.
+- 상세: [[tools/ios/background-video-upload-design|대용량 영상 백그라운드 업로드 설계 결정]]
 
 ## 🔗 연관 개념
 - [[concurrency-vs-parallelism]]
