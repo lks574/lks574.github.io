@@ -14,7 +14,9 @@ const REQUIRED_SECTIONS = [
 ];
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const MIN_DATE = new Date('2026-01-01');
+// Authors write dates in their local zone (KST) while CI runs in UTC, so allow one day of slack.
 const today = new Date();
+today.setDate(today.getDate() + 1);
 today.setHours(23, 59, 59, 999);
 
 const errors = [];
