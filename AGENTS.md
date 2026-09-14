@@ -8,7 +8,7 @@
 ## 공용 절차 패키지 (90-system)
 
 이 저장소의 `src/content/90-system/`이 공용 스킬, 에이전트, AGENTS.md 공용 조각, 설치 스크립트의 **유일한 원본**입니다.
-홈 폴더(`~/.claude/skills`, `~/.agents/skills`, `~/.codex/skills`, `~/.claude/agents`)에는 심볼릭 링크만 있습니다. 스킬을 고칠 때는 이 폴더의 파일을 고치고 `npm test`를 통과시킵니다.
+현재는 **이 저장소 안에서만** 적용합니다. `.claude/skills/`와 `.claude/agents/`가 그 폴더를 가리키는 심볼릭 링크입니다. 홈 폴더 전역 설치(`install.sh`)와 회사 저장소 연결(`link-repo.sh`)은 사용자가 따로 지시할 때까지 하지 않습니다. 스킬을 고칠 때는 원본 폴더의 파일을 고치고 `npm test`를 통과시킵니다.
 커밋 메시지는 `commit-message` 스킬을 따릅니다. 제목 한 줄이 기본이고, 변경 내역을 bullet로 나열하는 본문과 자동 서명은 금지입니다.
 
 ## Development

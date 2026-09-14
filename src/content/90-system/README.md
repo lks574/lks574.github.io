@@ -28,13 +28,17 @@
 
 회사 내부 식별자가 많은 스킬(`create-task`, `fix-qa-issue-report`, `create-langset`, `generate-project-*`, `ui-design-code`)과 iOS 전용 에이전트(`ios-senior-developer`, `internal-qa-engineer`, `meta-doc-updater`)는 아직 홈 폴더에만 있다. 공개 저장소에 올리기 전에 내부 참조를 원칙 수준으로 정리해야 한다.
 
-## 설치
+## 적용 범위 (2026-09-14 기준)
+
+**지금은 이 저장소에만 종속된다.** 루트의 `.claude/skills/`와 `.claude/agents/`가 이 폴더를 가리키는 심볼릭 링크라서, 이 저장소에서 여는 세션만 공용 스킬과 에이전트를 본다. 홈 폴더 전역 설치와 회사 저장소 연결은 여기서 검증이 끝난 뒤 사용자가 지시할 때 한다. 아래 스크립트는 그때 쓰는 도구다.
+
+## 설치 (전역 적용 시에만, 사용자 지시 후)
 
 ```bash
 cd <이 저장소>
-bash src/content/90-system/install.sh          # 홈에 스킬·에이전트 링크
-bash src/content/90-system/link-repo.sh ~/workspace/flitto/flitto_ios_v2   # 저장소 하나 연결
-npm test                                        # 스킬 규격 린트 포함
+npm test                                        # 스킬 규격 린트 포함 (지금 단계에서 필요한 것은 이것만)
+bash src/content/90-system/install.sh          # (보류) 홈에 스킬·에이전트 링크
+bash src/content/90-system/link-repo.sh <repo> # (보류) 저장소 하나 연결
 ```
 
 ## 규칙

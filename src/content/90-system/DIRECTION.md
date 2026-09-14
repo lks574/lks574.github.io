@@ -83,3 +83,4 @@ updatedDate: 2026-09-14
 | 2026-09-14 | 공용 절차 패키지 원본을 `90-system/`에 두기로 결정(공개 저장소). 회사 내부 식별자가 많은 스킬은 정리 전까지 홈에만 유지 | 사용자 선택. 저장소 하나로 단순하게 |
 | 2026-09-14 | 파이프라인 파일명 정본 확정: `prd.md` → `acceptance.md` → `spec_review.md` → `{티켓}_task.md` → `decisions.md` → `review.md` → `qa_result.md` | spec-reviewer는 하이픈 표기, QA 에이전트는 밑줄 표기를 찾던 불일치(3:48) 해소 |
 | 2026-09-14 | 신규 스킬 4개: write-prd, acceptance-criteria, record-decision, review-checklist | 목표 3(E2E)에 비어 있던 기획·완료기준·결정기록·리뷰 단계 |
+| 2026-09-14 | **공용 절차 패키지는 우선 이 저장소에만 종속.** 홈 폴더 전역 설치를 되돌리고 `.claude/skills`·`.claude/agents` 링크로만 노출. 회사 저장소 연결 보류 | 사용자 지시: "현재 프로젝트에 우선 종속시킬 거야". 검증 전 전역 변경은 과했음 |
