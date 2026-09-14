@@ -1,0 +1,104 @@
+{
+  "skill_name": "spec-to-ticket",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "push-notification 피쳐 작업 분할해줘. docs/push-notification/spec_review.md 읽어서 iOS prefix로 티켓 만들어줘. 상위 티켓은 iOS-500이야.",
+      "expected_output": "docs/push-notification/reviewed_spec_to_ticket/ticket_breakdown.md 생성. API/UI/Logic 섹션 구분. 의존성 흐름 다이어그램 포함. 사용자 검토 후 Jira 티켓 생성.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "ticket_breakdown.md 파일이 docs/{피쳐명}/reviewed_spec_to_ticket/ 경로에 생성됐다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "티켓 제목에 [iOS][API], [iOS][UI], [iOS] prefix 중 하나가 적절히 사용됐다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "작업 분할 테이블에 API 작업, 비즈니스 로직, 화면 작업 섹션이 구분되어 있다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "각 티켓에 예상 커밋 수와 예상 기간이 명시됐다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "의존성 흐름(ASCII 다이어그램 또는 테이블)이 포함됐다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "Jira 티켓 생성 전 사용자에게 검토를 요청했다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "생성된 모든 Jira 티켓 description에 **피쳐명**: 필드가 포함됐다",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "구독 결제 피쳐 티켓 나눠줘. spec_review.md는 docs/subscription/spec_review.md에 있고, BE prefix로 백엔드 티켓 먼저 만들어줘. Jira 프로젝트 키는 BE야.",
+      "expected_output": "BE prefix 사용([BE][API], [BE]). ticket_breakdown.md 생성. API 작업 위주 분할. 사용자 검토 절차 진행.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "티켓 제목에 [BE][API] 또는 [BE] prefix가 사용됐다 (iOS prefix 아님)",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "ticket_breakdown.md가 docs/subscription/reviewed_spec_to_ticket/ 경로에 생성됐다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "극소 티켓(커밋 1~2개짜리)이 별도로 생성되지 않고 인접 작업과 묶였다 (또는 모든 티켓이 커밋 3개 이상)",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "Jira 티켓 생성 시 프로젝트 키로 BE를 사용했다",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "프로필 편집 피쳐 기획서 분석해줘. docs/profile-edit/spec_review.md 기준으로 분석하고 ticket_breakdown 초안만 먼저 보여줘. 티켓 생성은 나중에 할게.",
+      "expected_output": "ticket_breakdown.md 생성 후 사용자에게 검토 요청. Jira 티켓은 아직 생성하지 않음. 기획 요약, 화면 목록, API 목록, 작업 분할 테이블 포함.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "ticket_breakdown.md에 기획 요약 섹션이 있다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "ticket_breakdown.md에 화면 목록 또는 API 작업 목록 테이블이 있다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "ticket_breakdown.md에 작업 분할 섹션이 있고 티켓 제목·예상 커밋·의존성이 포함됐다",
+          "passed": null,
+          "evidence": ""
+        },
+        {
+          "text": "사용자가 티켓 생성을 아직 요청하지 않았으므로 Jira 티켓 생성을 시도하지 않았다",
+          "passed": null,
+          "evidence": ""
+        }
+      ]
+    }
+  ]
+}
