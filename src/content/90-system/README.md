@@ -25,6 +25,7 @@
 | `record-decision` | 설계 결정 | `docs/{피쳐명}/decisions.md` |
 | `review-checklist` | 리뷰 | `review.md` 또는 PR 코멘트 |
 | `commit-message` | 커밋 | 제목 한 줄 |
+| `add-glossary-term` | 용어집 (이 저장소 전용 경로를 다루지만 두 도구가 같은 원본을 읽도록 여기 둔다) | `src/content/10-wiki/glossary/**` |
 
 회사 내부 식별자가 많은 스킬(`create-task`, `fix-qa-issue-report`, `create-langset`, `generate-project-*`, `ui-design-code`)과 iOS 전용 에이전트(`ios-senior-developer`, `internal-qa-engineer`, `meta-doc-updater`)는 아직 홈 폴더에만 있다. 공개 저장소에 올리기 전에 내부 참조를 원칙 수준으로 정리해야 한다.
 

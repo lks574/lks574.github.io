@@ -94,3 +94,4 @@ updatedDate: 2026-09-14
 | 2026-09-14 | 규칙 정본은 `AGENTS.md` 하나로 확정. Claude는 `CLAUDE.md` 링크로, Antigravity는 네이티브로 읽음. 스킬은 `.claude/skills`와 `.agents/skills` 두 링크로 같은 원본 노출 | 두 도구가 실제로 AGENTS.md를 읽는 것을 바이너리 문서와 세션 로그로 확인 |
 | 2026-09-14 | **Claude 메인, Antigravity 서브.** Claude가 방향·편집·종합을 맡고, 특정 작업을 Antigravity에 Orca 워커나 `agy -p`로 위임 | 사용자 명시. 같은 날 교차 평가로 위임 경로 검증 완료 |
 | 2026-09-14 | 파이프라인 첫 완주(wiki-backlinks): PRD→AC→Spec→구현→결정→QA→리뷰. 부수로 대문자 파일명 프로덕션 404 발견·수정 | 스킬 빈틈 3건 기록(`docs/wiki-backlinks/review.md`) |
+| 2026-09-14 | 파이프라인 두 번째 완주(promotion-candidates). **리뷰를 Antigravity에 위임**해 지적 6건 수용. 승격 대기 건수가 린트에 표시됨 | Claude 메인·Antigravity 서브의 첫 실증. 자기 리뷰가 놓치는 결함(사실 오류 결정 기록, 허위 통과 테스트)을 독립 리뷰가 잡음 |
