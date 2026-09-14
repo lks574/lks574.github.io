@@ -122,7 +122,8 @@ export function wikilinks(text) {
 
 /** Return the text of one `## <emoji> ...` section (up to the next `## `). */
 export function section(body, emojiPrefix) {
-	const re = new RegExp(`^## ${emojiPrefix}[^\\n]*\\n([\\s\\S]*?)(?=^## |$(?![\\r\\n]))`, 'm');
+	// header may carry a number before the emoji: `## 4. 🧭 얻은 원칙`
+	const re = new RegExp(`^## [^\\n]*?${emojiPrefix}[^\\n]*\\n([\\s\\S]*?)(?=^## |$(?![\\r\\n]))`, 'm');
 	const m = body.match(re);
 	return m ? m[1] : null;
 }

@@ -13,7 +13,8 @@
     "lint:glossary": "node scripts/lint-glossary.mjs",
     "glossary:find": "node scripts/find-term.mjs",
     "test": "node scripts/test-lint.mjs && node scripts/lint-skills.mjs",
-    "lint:skills": "node scripts/lint-skills.mjs"
+    "lint:skills": "node scripts/lint-skills.mjs",
+    "glossary:promote": "node scripts/promotion-candidates.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",

@@ -4,6 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { CATEGORIES, GLOSSARY_DIR, ROOT, WIKI_DIR, entryId, loadGlossary, parseFrontmatter, section, walk, wikilinks } from './glossary-lib.mjs';
+import { collectCandidates, summaryLine } from './promotion-candidates.mjs';
 
 const REQUIRED_SECTIONS = [
 	{ label: '## 💡 핵심 정의', test: /^## 💡/m },
@@ -120,7 +121,7 @@ for (const [a, set] of related) {
 }
 
 // ---- 2c. Tacit-knowledge coverage (the part that separates this glossary from an encyclopedia)
-const withJudgement = terms.filter((t) => /^## 🧭/m.test(t.body)).length;
+const withJudgement = terms.filter((t) => section(t.body, '🧭') !== null).length;
 const withSources = terms.filter((t) => Array.isArray(t.data.sources) && t.data.sources.length > 0).length;
 
 // Same slug in two categories
@@ -157,4 +158,5 @@ for (const e of errors) console.error(`error ${e}`);
 const pct = (n) => (terms.length ? Math.round((n / terms.length) * 100) : 0);
 console.log(`\nglossary lint: ${terms.length} terms, ${errors.length} error(s), ${warnings.length} warning(s)`);
 console.log(`tacit knowledge: 🧭 section ${withJudgement}/${terms.length} (${pct(withJudgement)}%), sources ${withSources}/${terms.length} (${pct(withSources)}%)`);
+console.log(summaryLine(collectCandidates()));
 process.exit(errors.length ? 1 : 0);
