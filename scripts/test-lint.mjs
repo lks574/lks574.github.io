@@ -44,6 +44,7 @@ const cases = [
 	{ name: 'one-way related link', files: { 'glossary/ai/oneway.md': good('oneway').replace('## 🔗 연관 개념\n- ', '## 🔗 연관 개념\n- [[rag]]') }, expectErrors: ['missing backlink: oneway lists [[rag]]'] },
 	{ name: 'duplicate alias', files: { 'glossary/ai/dup.md': good('dup').replace('aliases: []', 'aliases: ["RAG"]') }, expectErrors: ['duplicates'] },
 	{ name: 'slug collision with wiki note', files: { 'glossary/ai/yoga-flexbox.md': good('yoga-flexbox') }, expectErrors: ['collides with'] },
+	{ name: 'uppercase file name', files: { 'concepts/Upper-Case.md': '---\ntitle: "x"\n---\n\nbody\n' }, expectErrors: ['file name must be lowercase'] },
 	{ name: 'block list frontmatter parses', files: { 'glossary/ai/blocklist.md': good('blocklist').replace('tags: ["test"]', 'tags:\n  - test\n  - two') }, expectErrors: [] },
 ];
 

@@ -38,6 +38,8 @@ const wikiFiles = walk(WIKI_DIR).filter((f) => !f.startsWith(GLOSSARY_DIR));
 for (const f of wikiFiles) {
 	const id = entryId(f, WIKI_DIR);
 	if (!id) continue;
+	const rawId = relative(WIKI_DIR, f).replace(/\.(md|mdx)$/, '');
+	if (rawId !== rawId.toLowerCase()) err(f, `file name must be lowercase: Astro serves it at /wiki/${id}/ so [[${rawId.split('/').pop()}]] 404s on GitHub Pages`);
 	claim(id, f);
 	const tail = id.split('/').pop();
 	if (tail !== id) claim(tail, f);

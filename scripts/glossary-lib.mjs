@@ -91,7 +91,8 @@ function unquote(v) {
 
 /** Content id the Astro glob loader would assign, relative to `base`. */
 export function entryId(file, base) {
-	let id = relative(base, file).split(sep).join('/').replace(/\.(md|mdx)$/, '');
+	// Astro's glob loader slugifies ids to lowercase; URLs on GitHub Pages (Linux) are case-sensitive.
+	let id = relative(base, file).split(sep).join('/').replace(/\.(md|mdx)$/, '').toLowerCase();
 	if (id.endsWith('/index')) id = id.slice(0, -'/index'.length);
 	if (id === 'index') id = '';
 	return id;
