@@ -41,6 +41,9 @@ bash src/content/90-system/install.sh          # (보류) 홈에 스킬·에이�
 bash src/content/90-system/link-repo.sh <repo> # (보류) 저장소 하나 연결
 ```
 
+## 알려진 문제
+- 홈 폴더(`~/.claude/skills`)에 같은 이름의 옛 스킬 사본이 있으면 Skill 도구가 그쪽을 로드할 수 있다(2026-09-14 `tech-spec-template`에서 관찰). 프로젝트 우선이라는 문서 설명과 다르다. 이 저장소에서 공용 스킬을 확실히 쓰려면 홈의 동명 사본을 정리해야 하며, 그 작업은 사용자 지시로만 한다.
+
 ## 규칙
 - 원본은 이 폴더 하나다. 홈 폴더와 저장소에는 링크나 포함 문구만 둔다.
 - 스킬을 고치면 `npm test`(`scripts/lint-skills.mjs`)가 frontmatter, 이름 규칙, 파일명 정본(`spec_review.md`)을 검사한다.
