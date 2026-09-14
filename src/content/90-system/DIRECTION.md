@@ -84,3 +84,4 @@ updatedDate: 2026-09-14
 | 2026-09-14 | 파이프라인 파일명 정본 확정: `prd.md` → `acceptance.md` → `spec_review.md` → `{티켓}_task.md` → `decisions.md` → `review.md` → `qa_result.md` | spec-reviewer는 하이픈 표기, QA 에이전트는 밑줄 표기를 찾던 불일치(3:48) 해소 |
 | 2026-09-14 | 신규 스킬 4개: write-prd, acceptance-criteria, record-decision, review-checklist | 목표 3(E2E)에 비어 있던 기획·완료기준·결정기록·리뷰 단계 |
 | 2026-09-14 | **공용 절차 패키지는 우선 이 저장소에만 종속.** 홈 폴더 전역 설치를 되돌리고 `.claude/skills`·`.claude/agents` 링크로만 노출. 회사 저장소 연결 보류 | 사용자 지시: "현재 프로젝트에 우선 종속시킬 거야". 검증 전 전역 변경은 과했음 |
+| 2026-09-14 | 규칙 정본은 `AGENTS.md` 하나로 확정. Claude는 `CLAUDE.md` 링크로, Antigravity는 네이티브로 읽음. 스킬은 `.claude/skills`와 `.agents/skills` 두 링크로 같은 원본 노출 | 두 도구가 실제로 AGENTS.md를 읽는 것을 바이너리 문서와 세션 로그로 확인 |
