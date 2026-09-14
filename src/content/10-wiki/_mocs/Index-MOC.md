@@ -15,7 +15,7 @@ updatedDate: 2026-09-14
 ## 💡 개념 & 아키텍처 (Concepts)
 불변하는 핵심 이론과 멘탈 모델입니다:
 - [[concepts/ax-and-tacit-knowledge-assetization|인공지능 전환(AX)과 암묵지 자산화]]: 고정 파이프라인에서 자율 에이전트까지, 에이전틱 오케스트레이션과 기억의 통합
-- [[Multi-Agent-Orchestration]]: Orca 기반 멀티 에이전트 파이프라인
+- [[multi-agent-orchestration]]: Orca 기반 멀티 에이전트 파이프라인
 
 ## 🛠️ 기술 스택 & 도구 (Tools)
 실무에서 직접 다루고 검증한 프레임워크와 라이브러리입니다:

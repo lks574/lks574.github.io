@@ -127,7 +127,7 @@ flowchart TD
 ---
 
 ## 🔗 연관 지식 & 위키
-- [[Multi-Agent-Orchestration]]: Orca 기반 멀티 에이전트 실전 파이프라인
+- [[multi-agent-orchestration]]: Orca 기반 멀티 에이전트 실전 파이프라인
 - [[agentic-rag|Agentic RAG (에이전틱 RAG)]]: 고정 파이프라인을 넘어서는 동적 추론 레이어
 - [[memory-consolidation|Memory Consolidation (기억의 통합)]]: 3단 에이전트 메모리 승격 메커니즘
-- [[Index-MOC|지식 지도 MOC]]
+- [[index-moc|지식 지도 MOC]]

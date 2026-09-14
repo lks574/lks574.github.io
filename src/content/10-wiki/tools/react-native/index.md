@@ -31,5 +31,5 @@ React Native(RN)는 JavaScript/TypeScript와 React 멘탈 모델을 바탕으로
 ---
 
 ## 3. 관련 링크
-- [[Multi-Agent-Orchestration]]: RN 프로젝트 학습 및 구현에 활용한 멀티 에이전트 워크플로우
-- [[Index-MOC]]: 전체 지식 지도
+- [[multi-agent-orchestration]]: RN 프로젝트 학습 및 구현에 활용한 멀티 에이전트 워크플로우
+- [[index-moc]]: 전체 지식 지도

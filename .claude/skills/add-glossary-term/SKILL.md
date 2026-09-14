@@ -84,7 +84,7 @@ error가 0이 될 때까지 고친다. `orphan` warning은 정말 연관된 용�
 사용자가 트러블슈팅 노트를 가리키며 용어를 요청했다면, 그 노트의 `🧭 얻은 원칙` 내용을 새 용어의 `## 🧭 내 실무 판단 & 사례`에 옮기고 `sources`에 노트 경로(예: `tools/react-native/troubleshooting/metro-cache-reset`)를 넣는다. 노트 쪽 관련 용어 줄에도 `[[new-slug]]`를 추가한다.
 
 ## 7. 하지 않는 일
-- `Index-MOC.md` 등 목차 파일에 용어 링크 추가
+- `index-moc.md` 등 목차 파일에 용어 링크 추가
 - 기존 용어 파일의 본문 재작성 (섹션 단위 보강만 허용)
 - 존재하지 않는 용어로의 `[[링크]]`
 - `index`, `../index` 같은 상대 링크

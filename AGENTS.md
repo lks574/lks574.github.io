@@ -86,7 +86,7 @@ Consult these guides before working on related tasks:
 
 5. **링크 규칙:**
    - 용어집 → 용어집: 파일명(slug)만 사용합니다. 예: `[[rag]]`, `[[context-window]]`
-   - 용어집 → 일반 위키 노트: 전체 경로를 사용합니다. 예: `[[tools/react-native/architecture|RN 신 아키텍처]]`, `[[concepts/Multi-Agent-Orchestration]]`
+   - 용어집 → 일반 위키 노트: 전체 경로를 사용합니다. 예: `[[tools/react-native/architecture|RN 신 아키텍처]]`, `[[concepts/multi-agent-orchestration]]`
    - `index`, `../index`, `troubleshooting/index` 같은 옵시디언식 상대 링크는 사이트에서 404가 나므로 금지합니다. 폴더 허브는 폴더 경로로 링크합니다 (`[[tools/react-native]]`).
    - 아직 존재하지 않는 용어를 링크하지 않습니다. 필요하면 먼저 그 용어를 만듭니다.
    - 연관 개념은 **실제로 함께 이해해야 하는 개념만** 넣습니다. 고아(orphan) 경고를 없애기 위한 억지 링크는 그래프 품질을 조용히 떨어뜨리므로 금지합니다. 정말 연관된 용어가 없으면 고아로 두어도 됩니다.
@@ -102,7 +102,7 @@ Consult these guides before working on related tasks:
    - 린트 스크립트를 고쳤다면 `npm test`(픽스처 네거티브 테스트)도 통과해야 합니다.
 
 8. **목차 파일 편집 금지 (Zero-Maintenance Auto-Indexing):**
-   - `Index-MOC.md`나 다른 MOC 파일에 개별 용어 링크를 추가하지 않습니다. `/wiki/glossary/` 페이지, `/wiki/glossary.json`, `/llms.txt`가 빌드 타임에 전체 용어를 자동으로 집계합니다.
+   - `index-moc.md`나 다른 MOC 파일에 개별 용어 링크를 추가하지 않습니다. `/wiki/glossary/` 페이지, `/wiki/glossary.json`, `/llms.txt`가 빌드 타임에 전체 용어를 자동으로 집계합니다.
 
 9. **일화 → 의미 승격 (트러블슈팅 노트와의 연결):**
    - 트러블슈팅 노트(`tools/**/troubleshooting/*.md`)를 쓰거나 읽다가 관련 용어를 발견하면, 그 용어의 `## 🧭 내 실무 판단 & 사례`에 한두 줄을 추가하고 `sources`에 노트 경로를 등록합니다. 이것이 유일하게 허용되는 "기존 용어 본문 추가"이며, 새 섹션이 없으면 `## 🔗 연관 개념` 바로 위에 만듭니다.

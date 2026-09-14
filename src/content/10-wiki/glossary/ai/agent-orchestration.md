@@ -23,4 +23,4 @@ updatedDate: 2026-09-11
 3. **Synthesis & Handoff:** 서브에이전트의 실행 결과를 취합하여 검증한 후 다음 단계 에이전트에게 인계하거나 사용자에게 최종 리포트를 전달합니다.
 
 ## 🔗 연관 개념
-- [[agentic-rag]] · [[memory-consolidation]] · [[concepts/Multi-Agent-Orchestration|멀티 에이전트 오케스트레이션 (Orca 실전)]]
+- [[agentic-rag]] · [[memory-consolidation]] · [[concepts/multi-agent-orchestration|멀티 에이전트 오케스트레이션 (Orca 실전)]]
