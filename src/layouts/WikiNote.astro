@@ -10,14 +10,43 @@ interface Props {
 	description?: string;
 	tags?: string[];
 	updatedDate?: Date;
+	kind?: 'wiki' | 'glossary';
+	canonicalPath?: string;
+	category?: string;
+	aliases?: string[];
+	sources?: string[];
+	supersededBy?: string;
 }
 
-const { title = 'Wiki Note', description = '', tags = [], updatedDate } = Astro.props;
+const {
+	title = 'Wiki Note',
+	description = '',
+	tags = [],
+	updatedDate,
+	kind = 'wiki',
+	canonicalPath,
+	category,
+	aliases = [],
+	sources = [],
+	supersededBy,
+} = Astro.props;
+
+const categoryLabel: Record<string, string> = {
+	ai: '🤖 AI & LLM',
+	architecture: '🏗️ 아키텍처 & 코어',
+	client: '📱 클라이언트 & 런타임',
+	product: '🚀 프로덕트 & 데브옵스',
+};
+
+const isGlossary = kind === 'glossary';
+const backHref = isGlossary ? '/wiki/glossary/' : '/wiki';
+const backLabel = isGlossary ? '기술 용어집 (Glossary)' : '지식 위키 (Digital Garden)';
+const badge = isGlossary ? `📖 ${categoryLabel[category ?? ''] ?? 'Glossary'}` : '🌿 Evergreen Note';
 ---
 
 <html lang="ko">
 	<head>
-		<BaseHead title={`${title} | 지식 위키 - ${SITE_TITLE}`} description={description} />
+		<BaseHead title={`${title} | 지식 위키 - ${SITE_TITLE}`} description={description} canonicalPath={canonicalPath} />
 	</head>
 
 	<body>
@@ -25,13 +54,27 @@ const { title = 'Wiki Note', description = '', tags = [], updatedDate } = Astro.
 		<main>
 			<article class="wiki-wrapper">
 				<div class="wiki-breadcrumb">
-					<a href="/wiki">&larr; 지식 위키 (Digital Garden)</a>
+					<a href={backHref}>&larr; {backLabel}</a>
 				</div>
 
 				<header class="wiki-header">
-					<div class="wiki-type-badge">🌿 Evergreen Note</div>
+					<div class="wiki-type-badge">{badge}</div>
 					<h1 class="wiki-title">{title}</h1>
 					{description && <p class="wiki-desc">{description}</p>}
+					{
+						supersededBy && (
+							<p class="wiki-superseded">
+								⚠️ 이 용어는 <a href={`/wiki/${supersededBy}/`}>{supersededBy}</a>로 대체되었습니다. 이력 보존을 위해 남겨둔 노트입니다.
+							</p>
+						)
+					}
+					{
+						aliases.length > 0 && (
+							<p class="wiki-aliases">
+								별칭: {aliases.map((alias) => <span class="wiki-alias">{alias}</span>)}
+							</p>
+						)
+					}
 
 					<div class="wiki-meta">
 						{
@@ -56,6 +99,29 @@ const { title = 'Wiki Note', description = '', tags = [], updatedDate } = Astro.
 				<div class="prose wiki-content">
 					<slot />
 				</div>
+
+				{
+					sources.length > 0 && (
+						<footer class="wiki-sources">
+							<h2>📚 출처 & 승격 근거</h2>
+							<ul>
+								{sources.map((src) =>
+									/^https?:\/\//.test(src) ? (
+										<li>
+											<a href={src} rel="noopener" target="_blank">
+												{src}
+											</a>
+										</li>
+									) : (
+										<li>
+											<a href={`/wiki/${src}/`}>{src}</a>
+										</li>
+									),
+								)}
+							</ul>
+						</footer>
+					)
+				}
 			</article>
 		</main>
 		<Footer />
@@ -63,6 +129,42 @@ const { title = 'Wiki Note', description = '', tags = [], updatedDate } = Astro.
 </html>
 
 <style>
+	.wiki-superseded {
+		margin: 0.75rem 0 0;
+		padding: 0.6rem 0.9rem;
+		border-radius: 8px;
+		background: rgba(255, 170, 0, 0.08);
+		border: 1px solid rgba(255, 170, 0, 0.4);
+		font-size: 0.9rem;
+	}
+
+	.wiki-aliases {
+		margin: 0.5rem 0 0;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+	}
+
+	.wiki-alias {
+		display: inline-block;
+		margin-left: 0.4rem;
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
+		border: 1px solid var(--border-color);
+		font-size: 0.8rem;
+	}
+
+	.wiki-sources {
+		margin-top: 2.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--border-color);
+		font-size: 0.9rem;
+	}
+
+	.wiki-sources h2 {
+		font-size: 1rem;
+		margin: 0 0 0.5rem;
+	}
+
 	.wiki-wrapper {
 		max-width: 760px;
 		margin: 0 auto;

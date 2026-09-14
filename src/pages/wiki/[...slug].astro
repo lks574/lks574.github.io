@@ -2,40 +2,69 @@
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import WikiNote from '../../layouts/WikiNote.astro';
 
+type WikiEntry = CollectionEntry<'wiki'>;
+type GlossaryEntry = CollectionEntry<'glossary'>;
+type Props = { entry: WikiEntry; kind: 'wiki' } | { entry: GlossaryEntry; kind: 'glossary' };
+
 export async function getStaticPaths() {
-	const notes = await getCollection('wiki');
-	const paths = [];
+	const wikiNotes = await getCollection('wiki');
+	const glossaryTerms = await getCollection('glossary');
 
-	for (const note of notes) {
-		// 1. Full path (e.g. concepts/multi-agent-orchestration)
-		paths.push({
-			params: { slug: note.id },
-			props: note,
-		});
-
-		// 2. Filename-only alias (e.g. multi-agent-orchestration)
-		const fileName = note.id.split('/').pop();
-		if (fileName && fileName !== note.id) {
-			paths.push({
-				params: { slug: fileName },
-				props: note,
-			});
+	// slug -> props. First writer wins, so glossary is registered first:
+	// a bare `[[rag]]` must resolve to the glossary term even if a wiki note
+	// with the same filename appears later.
+	const paths = new Map<string, Props>();
+	const claim = (slug: string, props: Props) => {
+		if (paths.has(slug)) {
+			const prev = paths.get(slug)!;
+			// Silently dropping a note is how knowledge gets lost at scale.
+			// scripts/lint-glossary.mjs reports the same condition as an error.
+			throw new Error(
+				`[wiki routes] slug collision on "/wiki/${slug}": ${prev.kind}:${prev.entry.id} vs ${props.kind}:${props.entry.id}. Rename one file.`,
+			);
 		}
+		paths.set(slug, props);
+	};
+
+	for (const entry of glossaryTerms) {
+		const props: Props = { entry, kind: 'glossary' };
+		// Canonical: /wiki/glossary/ai/rag
+		claim(`glossary/${entry.id}`, props);
+		// Bare alias for wikilinks: /wiki/rag
+		claim(entry.id.split('/').pop()!, props);
 	}
 
-	return paths;
-}
-type Props = CollectionEntry<'wiki'>;
+	for (const entry of wikiNotes) {
+		const props: Props = { entry, kind: 'wiki' };
+		// Full path (e.g. concepts/multi-agent-orchestration)
+		claim(entry.id, props);
+		// Filename-only alias (e.g. multi-agent-orchestration)
+		const fileName = entry.id.split('/').pop();
+		if (fileName && fileName !== entry.id) claim(fileName, props);
+	}
 
-const note = Astro.props;
-const { Content } = await render(note);
+	return Array.from(paths, ([slug, props]) => ({ params: { slug }, props }));
+}
+
+const { entry, kind } = Astro.props;
+const { Content } = await render(entry);
+
+const glossaryData = kind === 'glossary' ? (entry as GlossaryEntry).data : undefined;
+// Bare-slug aliases (/wiki/rag) point search engines at the canonical path.
+const canonicalPath = kind === 'glossary' ? `/wiki/glossary/${entry.id}/` : `/wiki/${entry.id}/`;
 ---
 
 <WikiNote
-	title={note.data.title || note.id}
-	description={note.data.description}
-	tags={note.data.tags}
-	updatedDate={note.data.updatedDate}
+	title={entry.data.title || entry.id}
+	description={entry.data.description}
+	tags={entry.data.tags}
+	updatedDate={entry.data.updatedDate}
+	kind={kind}
+	canonicalPath={canonicalPath}
+	category={glossaryData?.category}
+	aliases={glossaryData?.aliases}
+	sources={glossaryData?.sources}
+	supersededBy={glossaryData?.supersededBy}
 >
 	<Content />
 </WikiNote>

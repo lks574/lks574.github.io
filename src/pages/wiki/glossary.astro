@@ -1,0 +1,569 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+// Every file under src/content/10-wiki/glossary/{category}/{slug}.md
+const glossaryNotes = (await getCollection('glossary'))
+	.filter((note) => !note.data.supersededBy)
+	.sort((a, b) => a.data.title.toLowerCase().localeCompare(b.data.title.toLowerCase(), 'ko'));
+
+// Categories definition
+const categoryMeta: Record<string, { name: string; icon: string; order: number }> = {
+	ai: { name: 'AI & LLM', icon: '🤖', order: 1 },
+	architecture: { name: '아키텍처 & 코어', icon: '🏗️', order: 2 },
+	client: { name: '클라이언트 & 런타임', icon: '📱', order: 3 },
+	product: { name: '프로덕트 & 데브옵스', icon: '🚀', order: 4 },
+};
+
+// Count by category
+const categoryCounts: Record<string, number> = {
+	all: glossaryNotes.length,
+	ai: 0,
+	architecture: 0,
+	client: 0,
+	product: 0,
+};
+
+for (const note of glossaryNotes) {
+	categoryCounts[note.data.category]++;
+}
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`엔지니어링 & AI 기술 용어집 (Glossary) | ${SITE_TITLE}`}
+			description="AI 에이전트와 함께 축적하는 실무 개발자 테크 용어 사전. AI, 아키텍처, 모바일 클라이언트, 프로덕트 엔지니어링 핵심 개념."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="glossary-hero">
+				<div class="hero-top">
+					<span class="badge">📖 Agent-Curated Tech Glossary</span>
+					<span class="count-badge">총 {glossaryNotes.length}개 용어 수록</span>
+				</div>
+				<h1 class="page-title">엔지니어링 & AI 기술 용어집</h1>
+				<p class="page-desc">
+					AI 에이전트들과 실무를 진행하며 축적하는 <strong>Zero-Maintenance 에버그린 테크 사전</strong>입니다.
+					모든 용어는 에이전트 프로토콜에 의해 개별 원자적 파일로 자율 관리되며, 실시간 검색과 도메인별 필터링을 지원합니다.
+				</p>
+			</div>
+
+			<!-- Search & Filter Controls -->
+			<section class="controls-section">
+				<div class="search-box">
+					<svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+						<path
+							d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a1 1 0 0 1-1.414 1.415l-4.126-4.127A5.5 5.5 0 1 1 8.5 3zm0 2a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"
+							fill="currentColor"
+						/>
+					</svg>
+					<input
+						type="search"
+						id="glossary-search"
+						placeholder="용어명, 한글/영문 약어, 설명, 태그 실시간 검색 (예: RAG, 멱등성, JSI, Fabric)..."
+						aria-label="용어 검색"
+					/>
+					<button id="clear-search" class="clear-btn" aria-label="검색어 초기화" style="display: none;">✕</button>
+				</div>
+
+				<div class="category-tabs" role="tablist">
+					<button class="cat-tab active" data-category="all">
+						전체보기 <span class="tab-count">{categoryCounts.all}</span>
+					</button>
+					<button class="cat-tab" data-category="ai">
+						🤖 AI & LLM <span class="tab-count">{categoryCounts.ai}</span>
+					</button>
+					<button class="cat-tab" data-category="architecture">
+						🏗️ 아키텍처 <span class="tab-count">{categoryCounts.architecture}</span>
+					</button>
+					<button class="cat-tab" data-category="client">
+						📱 클라이언트 <span class="tab-count">{categoryCounts.client}</span>
+					</button>
+					<button class="cat-tab" data-category="product">
+						🚀 프로덕트 <span class="tab-count">{categoryCounts.product}</span>
+					</button>
+				</div>
+			</section>
+
+			<!-- Result Count Banner -->
+			<div class="result-bar">
+				<span id="result-status">전체 {glossaryNotes.length}개의 용어 표시 중</span>
+			</div>
+
+			<!-- Glossary Grid -->
+			<div class="glossary-grid" id="glossary-grid">
+				{
+					glossaryNotes.map((note) => {
+						const catKey = note.data.category;
+						const slug = note.id.split('/').pop() || note.id;
+						const meta = categoryMeta[catKey];
+						const aliases = (note.data.aliases || []).join(' ');
+						const tags = (note.data.tags || []).join(' ');
+						const searchableText = `${note.data.title} ${slug} ${aliases} ${note.data.description || ''} ${tags}`.toLowerCase();
+
+						return (
+							<article
+								class="term-card"
+								data-category={catKey}
+								data-search={searchableText}
+							>
+								<a href={`/wiki/glossary/${note.id}/`} class="term-link">
+									<div class="term-header">
+										<span class="cat-badge">
+											{meta.icon} {meta.name}
+										</span>
+									</div>
+									<h2 class="term-title">{note.data.title}</h2>
+									{note.data.description && (
+										<p class="term-desc">{note.data.description}</p>
+									)}
+
+									{note.data.aliases && note.data.aliases.length > 0 && (
+										<div class="alias-row">
+											<span class="alias-label">별칭:</span>
+											{note.data.aliases.map((alias: string) => (
+												<span class="alias-pill">{alias}</span>
+											))}
+										</div>
+									)}
+
+									{note.data.tags && note.data.tags.length > 0 && (
+										<div class="tag-row">
+											{note.data.tags.map((tag: string) => (
+												<span class="tag-pill">#{tag}</span>
+											))}
+										</div>
+									)}
+								</a>
+							</article>
+						);
+					})
+				}
+			</div>
+
+			<!-- Empty State -->
+			<div id="no-results" class="empty-state" style="display: none;">
+				<div class="empty-icon">🔍</div>
+				<h3>검색 결과가 없습니다</h3>
+				<p>검색어를 변경하거나 다른 카테고리를 선택해 보세요.</p>
+				<button id="reset-filter-btn" class="reset-btn">모든 필터 초기화</button>
+			</div>
+		</main>
+		<Footer />
+
+		<script>
+			// Client-side instant filter & search
+			const searchInput = document.getElementById('glossary-search') as HTMLInputElement | null;
+			const clearBtn = document.getElementById('clear-search') as HTMLButtonElement | null;
+			const categoryTabs = document.querySelectorAll<HTMLButtonElement>('.cat-tab');
+			const cards = document.querySelectorAll<HTMLElement>('.term-card');
+			const resultStatus = document.getElementById('result-status');
+			const noResults = document.getElementById('no-results');
+			const resetBtn = document.getElementById('reset-filter-btn');
+
+			let activeCategory = 'all';
+			let searchQuery = '';
+
+			function filterCards() {
+				let visibleCount = 0;
+				const query = searchQuery.trim().toLowerCase();
+
+				cards.forEach((card) => {
+					const cardCat = card.getAttribute('data-category');
+					const cardSearchText = card.getAttribute('data-search') || '';
+
+					const matchesCategory = activeCategory === 'all' || cardCat === activeCategory;
+					const matchesQuery = query === '' || cardSearchText.includes(query);
+
+					if (matchesCategory && matchesQuery) {
+						card.style.display = 'flex';
+						visibleCount++;
+					} else {
+						card.style.display = 'none';
+					}
+				});
+
+				// Update counter
+				if (resultStatus) {
+					if (query || activeCategory !== 'all') {
+						resultStatus.textContent = `조건에 맞는 용어 ${visibleCount}개 표시 중`;
+					} else {
+						resultStatus.textContent = `전체 ${cards.length}개의 용어 표시 중`;
+					}
+				}
+
+				// Empty state
+				if (noResults) {
+					noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+				}
+
+				// Clear button visibility
+				if (clearBtn && searchInput) {
+					clearBtn.style.display = searchInput.value ? 'block' : 'none';
+				}
+			}
+
+			// Category click
+			categoryTabs.forEach((tab) => {
+				tab.addEventListener('click', () => {
+					categoryTabs.forEach((t) => t.classList.remove('active'));
+					tab.classList.add('active');
+					activeCategory = tab.getAttribute('data-category') || 'all';
+					filterCards();
+				});
+			});
+
+			// Search input
+			let searchTimer: ReturnType<typeof setTimeout> | undefined;
+			searchInput?.addEventListener('input', (e) => {
+				const value = (e.target as HTMLInputElement).value;
+				// Debounce: the grid is filtered in the DOM, so avoid one pass per keystroke.
+				clearTimeout(searchTimer);
+				searchTimer = setTimeout(() => {
+					searchQuery = value;
+					filterCards();
+				}, 120);
+			});
+
+			// Clear button
+			clearBtn?.addEventListener('click', () => {
+				if (searchInput) {
+					searchInput.value = '';
+					searchQuery = '';
+					filterCards();
+					searchInput.focus();
+				}
+			});
+
+			// Reset filter
+			resetBtn?.addEventListener('click', () => {
+				if (searchInput) searchInput.value = '';
+				searchQuery = '';
+				activeCategory = 'all';
+				categoryTabs.forEach((t) => {
+					if (t.getAttribute('data-category') === 'all') t.classList.add('active');
+					else t.classList.remove('active');
+				});
+				filterCards();
+			});
+		</script>
+	</body>
+</html>
+
+<style>
+	.glossary-hero {
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	.hero-top {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.badge {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: #1d4ed8;
+		background-color: #eff6ff;
+		border: 1px solid #bfdbfe;
+		padding: 0.3rem 0.75rem;
+		border-radius: 9999px;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.badge {
+			background-color: #1e293b;
+			color: #93c5fd;
+			border-color: #3b82f6;
+		}
+	}
+
+	.count-badge {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		background-color: var(--bg-secondary);
+		padding: 0.25rem 0.6rem;
+		border-radius: 9999px;
+		border: 1px solid var(--border-color);
+	}
+
+	.page-title {
+		font-size: 2.35rem;
+		margin: 0 0 0.75rem 0;
+	}
+
+	.page-desc {
+		color: var(--text-secondary);
+		margin: 0;
+		font-size: 1.05rem;
+		line-height: 1.7;
+	}
+
+	.controls-section {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.search-box {
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 100%;
+	}
+
+	.search-icon {
+		position: absolute;
+		left: 1rem;
+		width: 1.25rem;
+		height: 1.25rem;
+		color: var(--text-muted);
+		pointer-events: none;
+	}
+
+	.search-box input {
+		width: 100%;
+		padding: 0.85rem 2.75rem 0.85rem 2.85rem;
+		font-size: 1rem;
+		font-family: inherit;
+		background-color: var(--bg-card);
+		border: 1px solid var(--border-color);
+		border-radius: 12px;
+		color: var(--text-primary);
+		transition: border-color 0.2s, box-shadow 0.2s;
+	}
+
+	.search-box input:focus {
+		outline: none;
+		border-color: var(--accent);
+		box-shadow: 0 0 0 3px var(--accent-subtle);
+	}
+
+	.clear-btn {
+		position: absolute;
+		right: 1rem;
+		background: none;
+		border: none;
+		color: var(--text-muted);
+		font-size: 1.1rem;
+		cursor: pointer;
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+	}
+
+	.clear-btn:hover {
+		color: var(--text-primary);
+	}
+
+	.category-tabs {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.cat-tab {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.55rem 1rem;
+		font-size: 0.9rem;
+		font-weight: 500;
+		font-family: inherit;
+		background-color: var(--bg-secondary);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		color: var(--text-secondary);
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.cat-tab:hover {
+		color: var(--text-primary);
+		border-color: var(--text-muted);
+	}
+
+	.cat-tab.active {
+		background-color: var(--accent);
+		border-color: var(--accent);
+		color: #ffffff;
+		font-weight: 600;
+	}
+
+	.cat-tab.active .tab-count {
+		background-color: rgba(255, 255, 255, 0.25);
+		color: #ffffff;
+	}
+
+	.tab-count {
+		font-size: 0.78rem;
+		padding: 0.1rem 0.45rem;
+		border-radius: 9999px;
+		background-color: var(--bg-primary);
+		color: var(--text-muted);
+	}
+
+	.result-bar {
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		margin-bottom: 1.25rem;
+	}
+
+	.glossary-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.25rem;
+	}
+
+	.term-card {
+		background-color: var(--bg-card);
+		border: 1px solid var(--border-color);
+		border-radius: 12px;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.term-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--box-shadow);
+		border-color: var(--accent);
+	}
+
+	.term-link {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 1.4rem;
+		text-decoration: none;
+	}
+
+	.term-header {
+		margin-bottom: 0.65rem;
+	}
+
+	.cat-badge {
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--text-secondary);
+		background-color: var(--bg-secondary);
+		padding: 0.2rem 0.55rem;
+		border-radius: 6px;
+		border: 1px solid var(--border-color);
+	}
+
+	.term-title {
+		font-size: 1.2rem;
+		margin: 0 0 0.5rem 0;
+		color: var(--text-primary);
+		border-bottom: none;
+		padding-bottom: 0;
+		line-height: 1.35;
+	}
+
+	.term-card:hover .term-title {
+		color: var(--accent);
+	}
+
+	.term-desc {
+		font-size: 0.92rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+		margin: 0 0 1rem 0;
+		flex: 1;
+	}
+
+	.alias-row {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.75rem;
+		font-size: 0.8rem;
+	}
+
+	.alias-label {
+		color: var(--text-muted);
+		font-weight: 500;
+	}
+
+	.alias-pill {
+		background-color: var(--bg-secondary);
+		color: var(--text-secondary);
+		padding: 0.15rem 0.45rem;
+		border-radius: 4px;
+		border: 1px solid var(--border-color);
+		font-size: 0.78rem;
+	}
+
+	.tag-row {
+		display: flex;
+		gap: 0.35rem;
+		flex-wrap: wrap;
+		border-top: 1px solid var(--border-color);
+		padding-top: 0.65rem;
+	}
+
+	.tag-pill {
+		font-size: 0.78rem;
+		color: var(--text-muted);
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3.5rem 1.5rem;
+		background-color: var(--bg-card);
+		border: 1px dashed var(--border-color);
+		border-radius: 12px;
+		margin-top: 1rem;
+	}
+
+	.empty-icon {
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.empty-state h3 {
+		font-size: 1.25rem;
+		margin: 0 0 0.5rem 0;
+	}
+
+	.empty-state p {
+		color: var(--text-secondary);
+		margin: 0 0 1.25rem 0;
+	}
+
+	.reset-btn {
+		padding: 0.6rem 1.2rem;
+		background-color: var(--accent);
+		color: #ffffff;
+		border: none;
+		border-radius: 8px;
+		font-weight: 600;
+		font-family: inherit;
+		cursor: pointer;
+	}
+
+	@media (max-width: 640px) {
+		.glossary-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.category-tabs {
+			overflow-x: auto;
+			padding-bottom: 0.25rem;
+		}
+	}
+</style>
