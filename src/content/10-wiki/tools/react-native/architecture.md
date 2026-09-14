@@ -3,7 +3,7 @@ title: "React Native 스레드 모델 & 신규 아키텍처"
 description: "UI/JS/Shadow 3대 스레드 동작 원리와 JSI/Fabric/TurboModules 신규 아키텍처 정리"
 type: "concept"
 tags: ["domain/rn", "tech/architecture", "threads", "fabric"]
-updatedDate: 2026-03-11
+updatedDate: 2026-09-11
 ---
 
 ## 1. React Native 스레드 모델 (Thread Architecture)
@@ -64,4 +64,4 @@ React Native 애플리케이션은 기본적으로 **3개의 독립된 스레드
 ---
 
 ## 3. 상위 목차로 돌아가기
-* [[index|React Native 실무 생존 가이드로 돌아가기]]
+* [[tools/react-native|React Native 실무 생존 가이드로 돌아가기]]

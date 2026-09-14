@@ -3,7 +3,7 @@ title: "React Native (RN) 실무 생존 가이드"
 description: "React Native 아키텍처, 레이아웃 엔진, 실전 트러블슈팅을 집대성한 지식 허브"
 type: "hub"
 tags: ["domain/rn", "hub"]
-updatedDate: 2026-03-11
+updatedDate: 2026-09-11
 ---
 
 ## 1. 개요 (Overview)
@@ -25,7 +25,7 @@ React Native(RN)는 JavaScript/TypeScript와 React 멘탈 모델을 바탕으로
   C++ 기반 Yoga 레이아웃 엔진의 동작 방식과 모바일 환경에 특화된 Flexbox 실무 가이드
 
 ### ⚡ 실전 트러블슈팅 (1 이슈 1 파일)
-* [[troubleshooting/index|React Native 트러블슈팅 색인 허브]]  
+* [[tools/react-native/troubleshooting|React Native 트러블슈팅 색인 허브]]  
   빌드 에러, 번들러 캐시 꼬임, 런타임 크래시 해결 로그 모음
 
 ---

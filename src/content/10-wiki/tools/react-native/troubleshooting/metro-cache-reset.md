@@ -3,7 +3,7 @@ title: "Metro 번들러 캐시 꼬임 및 강제 리셋"
 description: "새로운 패키지 설치나 코드 변경 후 화면에 반영되지 않을 때 Metro 캐시 클리어 방법"
 type: "troubleshooting"
 tags: ["domain/rn", "metro", "cache", "troubleshooting"]
-updatedDate: 2026-03-11
+updatedDate: 2026-09-11
 ---
 
 ## 1. 증상 (Symptom)
@@ -43,5 +43,10 @@ npx react-native start --reset-cache
 
 ---
 
+## 4. 🧭 얻은 원칙 & 관련 용어 (Lesson)
+
+- 패키지 설치나 네이티브 설정 변경 뒤에 "코드는 맞는데 동작이 다르다"면, 코드보다 **빌드 캐시 계층(Metro, watchman, iOS DerivedData, Gradle)을 먼저 의심**한다. 재현 불가 버그의 상당수가 여기서 끝난다.
+- 관련 용어: 아직 용어집에 없음. 후보는 `hermes-bytecode-cache`, `fast-refresh`. 용어가 생기면 이 노트를 그 용어의 `sources`에 등록한다.
+
 ## 🔗 목록으로 돌아가기
-* [[index|트러블슈팅 목차로 돌아가기]]
+* [[tools/react-native/troubleshooting|트러블슈팅 목차로 돌아가기]]

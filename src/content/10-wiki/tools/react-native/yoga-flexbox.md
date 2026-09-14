@@ -3,7 +3,7 @@ title: "Yoga 엔진과 Flexbox 레이아웃"
 description: "C++ Yoga 레이아웃 엔진 동작 원리 및 모바일 특화 Flexbox 핵심 속성 정리"
 type: "concept"
 tags: ["domain/rn", "tech/layout", "yoga", "flexbox"]
-updatedDate: 2026-03-11
+updatedDate: 2026-09-11
 ---
 
 ## 1. Yoga 레이아웃 엔진이란?
@@ -46,4 +46,4 @@ updatedDate: 2026-03-11
 ---
 
 ## 4. 상위 목차로 돌아가기
-* [[index|React Native 실무 생존 가이드로 돌아가기]]
+* [[tools/react-native|React Native 실무 생존 가이드로 돌아가기]]

@@ -2,7 +2,7 @@
 title: "멀티 에이전트 오케스트레이션 (Multi-Agent Orchestration)"
 description: "Orca를 활용해 Claude, Codex, Antigravity를 하나의 오케스트레이터로 엮는 실전 지식"
 tags: ["AI", "에이전트", "오케스트레이션", "Orca", "생산성"]
-updatedDate: 2026-03-11
+updatedDate: 2026-09-11
 ---
 
 ## 1. 개요 (Overview)
@@ -43,5 +43,5 @@ updatedDate: 2026-03-11
 
 ## 4. 관련 링크
 
-- [[React-Native]]: RN 프로젝트에 에이전트를 실전 투입한 사례
+- [[react-native|React Native 실무 생존 가이드]]: RN 프로젝트에 에이전트를 실전 투입한 사례
 - 블로그 글: [2026년, '개발자로 살아남기'를 시작하며](/blog/welcome)
