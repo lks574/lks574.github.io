@@ -35,6 +35,17 @@ export function parseFrontmatter(text) {
 		const kv = line.match(/^([A-Za-z_][\w-]*):\s*(.*)$/);
 		if (!kv) continue;
 		const [, key, raw] = kv;
+		if (raw.trim() === '>' || raw.trim() === '|' || raw.trim() === '>-' || raw.trim() === '|-') {
+			// folded / literal block scalar: collect indented lines
+			const parts = [];
+			while (i < lines.length && (/^\s+\S/.test(lines[i]) || lines[i].trim() === '')) {
+				if (lines[i].trim() === '' && !(i + 1 < lines.length && /^\s+\S/.test(lines[i + 1]))) break;
+				parts.push(lines[i].trim());
+				i++;
+			}
+			data[key] = parts.join(raw.trim().startsWith('>') ? ' ' : '\n').trim();
+			continue;
+		}
 		if (raw.trim() === '') {
 			// block list?
 			const items = [];
