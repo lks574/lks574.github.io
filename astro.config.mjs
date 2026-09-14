@@ -2,6 +2,7 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { unified } from '@astrojs/markdown-remark';
 import { defineConfig, fontProviders } from 'astro/config';
 
 import wikiLinkPlugin from 'remark-wiki-link';
@@ -12,20 +13,26 @@ const owner = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.spli
 const isUserPage = repo && owner ? repo.toLowerCase() === `${owner.toLowerCase()}.github.io` : false;
 
 export default defineConfig({
-	site: owner ? `https://${owner}.github.io` : 'https://example.com',
+	site: owner ? `https://${owner}.github.io` : 'https://lks574.github.io',
 	base: repo && !isUserPage ? `/${repo}/` : '/',
 	integrations: [mdx(), sitemap()],
 	markdown: {
-		remarkPlugins: [
-			[
-				wikiLinkPlugin,
-				{
-					pathFormat: 'raw',
-					hrefTemplate: (permalink) => `/wiki/${permalink}`,
-					pageResolver: (name) => [name.replace(/ /g, '-')],
-				},
+		// Astro 7 deprecates markdown.remarkPlugins; the remark/rehype pipeline
+		// now lives in the unified() processor from @astrojs/markdown-remark.
+		processor: unified({
+			remarkPlugins: [
+				[
+					wikiLinkPlugin,
+					{
+						pathFormat: 'raw',
+						// Obsidian-style `[[target|label]]`; the plugin's default divider is ':'
+						aliasDivider: '|',
+						hrefTemplate: (permalink) => `/wiki/${permalink}`,
+						pageResolver: (name) => [name.replace(/ /g, '-')],
+					},
+				],
 			],
-		],
+		}),
 	},
 	fonts: [
 		{
