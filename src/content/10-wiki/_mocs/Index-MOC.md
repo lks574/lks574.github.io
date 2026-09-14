@@ -20,6 +20,7 @@ updatedDate: 2026-09-14
 ## 🛠️ 기술 스택 & 도구 (Tools)
 실무에서 직접 다루고 검증한 프레임워크와 라이브러리입니다:
 - [[tools/react-native|React-Native 실무 생존 가이드]]: 아키텍처, 레이아웃, 트러블슈팅 허브
+- [[tools/ios|iOS 실무 설계 기록]]: Swift 동시성, 모듈화, 백그라운드 업로드 같은 설계 결정과 그 이유
 
 ## ⚡ 실전 패턴 (Patterns)
 - [[tools/react-native/troubleshooting|React Native 트러블슈팅 아카이브]]: 1이슈 1노트 실무 에러 해결 로그
