@@ -4,7 +4,8 @@ description: "서로 다른 역할과 도구를 가진 다수의 AI 서브에이
 category: "ai"
 tags: ["ai", "agents", "multi-agent", "orchestration"]
 aliases: ["Agent Orchestration", "Multi-Agent", "에이전트 오케스트레이션"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-14
+sources: ["tools/agents/orchestration-and-memory-decisions"]
 ---
 
 ## 💡 핵심 정의
@@ -21,6 +22,12 @@ updatedDate: 2026-09-11
 1. **Supervisor / Planner 패턴:** 메인 에이전트가 사용자의 요구사항을 분석하여 세부 태스크 그래프(DAG)를 생성합니다.
 2. **Specialized Workers:** 각 태스크에 맞는 도구 세트(Tool Groups)를 장착한 워커 에이전트를 격리된 컨텍스트로 호출(`invoke_subagent`)합니다.
 3. **Synthesis & Handoff:** 서브에이전트의 실행 결과를 취합하여 검증한 후 다음 단계 에이전트에게 인계하거나 사용자에게 최종 리포트를 전달합니다.
+
+## 🧭 내 실무 판단 & 사례
+- **정답이 없는 질문은 두 에이전트에게 독립으로 묻는다.** 화면 상태 관리 방식 선택, 정보 구조 재설계, 진행 방식 채점처럼 판단이 갈리는 문제에서 Codex와 Claude, 또는 Claude와 Antigravity에 같은 브리프를 주고 답을 나란히 놓았다. 두 달간 Orca Run 12개 중 5개가 이 형태였고, 겹치는 지적이 가장 믿을 만했다.
+- **메인 하나, 서브 하나.** Claude가 방향 합의, 분해, 편집, 종합, 커밋을 맡고 Antigravity는 위임된 검증과 리뷰만 한다. 구현자가 만든 것을 다른 에이전트가 리뷰하게 했을 때, 자기 리뷰가 놓칠 종류의 결함(사실과 다른 결정 기록, 항상 통과하는 테스트)이 잡혔다.
+- **워커는 파일 브리프로 시작하고 파일로 끝낸다.** 목표, 읽을 파일, 허용 명령, 산출 경로, 완료 조건을 한 파일에 쓰고 그 경로만 넘긴다. 저장소 밖 수정은 브리프에서 금지하고, 결과는 검증한 뒤에만 채택한다.
+- 상세: [[tools/agents/orchestration-and-memory-decisions|에이전트 오케스트레이션과 기억 구조 결정]]
 
 ## 🔗 연관 개념
 - [[agentic-rag]] · [[memory-consolidation]] · [[concepts/multi-agent-orchestration|멀티 에이전트 오케스트레이션 (Orca 실전)]]

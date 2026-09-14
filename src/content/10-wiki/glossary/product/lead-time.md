@@ -4,7 +4,8 @@ description: "제품 아이디어 및 가설이 처음 발의된 시점부터, �
 category: "product"
 tags: ["product-engineering", "metrics", "lead-time", "dora", "velocity"]
 aliases: ["Lead Time", "리드 타임", "가설 검증 리드타임"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-15
+sources: ["concepts/multi-agent-orchestration", "tools/agents/orchestration-and-memory-decisions"]
 ---
 
 ## 💡 핵심 정의
@@ -21,6 +22,11 @@ updatedDate: 2026-09-11
 $$\text{Lead Time} = \text{기획/정의 시간} + \text{개발 시간} + \text{배포 시간} + \text{데이터 수집 및 분석 시간}$$
 - CI/CD 자동화와 Feature Flag를 통해 배포 시간을 분(Minutes) 단위로 단축하고,
 - 이벤트 로그(Telemetry)와 A/B 테스팅 파이프라인을 사전 구축하여 분석 시간을 단축함으로써 전체 리드 타임을 최적화합니다.
+
+## 🧭 내 실무 판단 & 사례
+- **기술 명세보다 가설과 지표가 먼저다.** 많이 만들고 나서 측정할 것이 없었던 경험 뒤로, 기획 문서 템플릿에서 목표마다 지표·기준선·목표치·측정 시점을 필수로 만들었다. 지표를 못 붙이는 목표는 목표가 아니라 바람으로 취급한다. 검증까지의 시간을 줄이는 첫 단계는 코드가 아니라 "무엇을 재는가"를 먼저 정하는 것이었다.
+- **에이전트 도입으로 구현 리드타임이 줄어든 것을 측정했다.** 설계 검증 → 구현 → 자동 빌드 검증 루프를 에이전트에 맡기고 전후를 비교했다. 줄어든 것은 타이핑 시간이 아니라 되돌림과 누락에 쓰던 시간이었다. 이 경험이 에이전트를 도구가 아니라 파이프라인 단계로 배치하게 된 계기다.
+- 상세: [[concepts/multi-agent-orchestration|멀티 에이전트 오케스트레이션]] · [[tools/agents/orchestration-and-memory-decisions|에이전트 오케스트레이션과 기억 구조 결정]]
 
 ## 🔗 연관 개념
 - [[feature-flag]]

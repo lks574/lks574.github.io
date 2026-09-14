@@ -4,7 +4,8 @@ description: "일상에서 발생하는 단편적인 일화적 기억(Episodic M
 category: "ai"
 tags: ["ai", "agents", "memory", "episodic-memory", "procedural-memory", "deep-twin"]
 aliases: ["Memory Consolidation", "기억의 통합", "메모리 통합"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-14
+sources: ["tools/agents/orchestration-and-memory-decisions"]
 ---
 
 ## 💡 핵심 정의
@@ -22,6 +23,11 @@ updatedDate: 2026-09-11
 2. **패턴 분석 & 추상화 (Consolidation Pipeline):** 백그라운드 워커 에이전트가 주기적으로 일화적 기억들을 비교 분석하여, 반복적으로 등장하는 성공/실패 패턴을 클러스터링합니다.
 3. **의미론적 기억 (Semantic Memory) 생성:** 추출된 인사이트를 구조화된 개념 사전(테크 용어집, 멘탈 모델)으로 정리합니다.
 4. **절차적 기억 (Procedural Memory) 승격:** 검증된 원칙을 시스템 규칙(`AGENTS.md`), 자동화 함수, 도구 워크플로우로 승격시켜 에이전트의 실행 지침으로 영구 내재화합니다.
+
+## 🧭 내 실무 판단 & 사례
+- **기억의 정본은 저장소, 에이전트 메모리는 포인터.** 사용자와 합의한 방향이 에이전트 사적 메모리에만 있다는 것을 발견하고 저장소에 헌장을 만들었다. 메모리에는 헌장 위치와 세션 연속성 사실만 남기고 방향 내용의 복사본은 지웠다. 둘이 다르면 어느 쪽도 자동으로 이기지 않고 멈춰서 사람과 정한 뒤 하나만 고친다.
+- **세 층 승격을 실제로 한 바퀴 돌렸다.** 회사 프로젝트 PR(일화) → 설계 기록 노트와 용어집 🧭(의미) → 리뷰 체크리스트 7항목(절차). 승격이 됐는지는 사람 기억이 아니라 린트가 매 실행 "승격 대기 N건"으로 보고한다. 루프가 설계돼 있다는 것과 돈다는 것은 다르다는 걸 채점에서 배웠다.
+- 상세: [[tools/agents/orchestration-and-memory-decisions|에이전트 오케스트레이션과 기억 구조 결정]]
 
 ## 🔗 연관 개념
 - [[agentic-rag]] · [[context-window]] · [[agent-orchestration]] · [[concepts/ax-and-tacit-knowledge-assetization|AX와 암묵지 자산화]]

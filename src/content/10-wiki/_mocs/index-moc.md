@@ -21,6 +21,7 @@ updatedDate: 2026-09-14
 실무에서 직접 다루고 검증한 프레임워크와 라이브러리입니다:
 - [[tools/react-native|React-Native 실무 생존 가이드]]: 아키텍처, 레이아웃, 트러블슈팅 허브
 - [[tools/ios|iOS 실무 설계 기록]]: Swift 동시성, 모듈화, 백그라운드 업로드 같은 설계 결정과 그 이유
+- [[tools/agents|AI 에이전트 운영 기록]]: Orca로 Claude·Codex·Antigravity를 엮으며 내린 역할·컨텍스트·기억 구조 결정
 
 ## ⚡ 실전 패턴 (Patterns)
 - [[tools/react-native/troubleshooting|React Native 트러블슈팅 아카이브]]: 1이슈 1노트 실무 에러 해결 로그

@@ -4,7 +4,8 @@ description: "LLM이 단일 프롬프트 및 대화 턴에서 한 번에 읽고 
 category: "ai"
 tags: ["ai", "llm", "context-window", "tokens", "rag"]
 aliases: ["Context Window", "컨텍스트 윈도우", "문맥 창"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-14
+sources: ["tools/agents/orchestration-and-memory-decisions"]
 ---
 
 ## 💡 핵심 정의
@@ -20,6 +21,11 @@ updatedDate: 2026-09-11
 ## ⚙️ 동작 원리 & 메커니즘
 - 트랜스포머(Transformer)의 **어텐션(Self-Attention)** 메커니즘은 토큰 간의 관계를 계산할 때 기본적으로 $O(N^2)$의 연산 복잡도를 가집니다.
 - 최근 모델들은 FlashAttention, RoPE(Rotary Position Embedding) 확장, 희소 어텐션(Sparse Attention) 등을 통해 수십만~수백만 토큰까지 컨텍스트 윈도우를 확장하고 있습니다.
+
+## 🧭 내 실무 판단 & 사례
+- **매번 읽히는 것과 막힐 때 읽는 것을 나눈다.** 규칙 파일과 스킬은 세션마다 로드되니 짧게 유지하고, 위키와 용어집은 링크와 `llms.txt`로 찾아가는 참조층으로 두었다. 용어집을 모든 에이전트 컨텍스트에 주입하는 안은 버렸다. 대부분은 그 작업과 무관한 토큰이었다.
+- **다른 에이전트에게 넘기는 컨텍스트는 자기완결적인 파일 하나다.** 워커는 코디네이터의 대화와 메모리를 모른다. 채팅으로 흘려 넣은 긴 프롬프트는 잘리고 재현이 안 됐지만, 브리프 파일은 diff가 남고 같은 조건으로 다시 돌릴 수 있었다.
+- 상세: [[tools/agents/orchestration-and-memory-decisions|에이전트 오케스트레이션과 기억 구조 결정]]
 
 ## 🔗 연관 개념
 - [[rag]] · [[agentic-rag]] · [[memory-consolidation]]

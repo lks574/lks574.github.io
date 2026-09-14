@@ -4,7 +4,8 @@ description: "LLM이 사전 학습된 데이터의 한계를 넘어, 질문과 �
 category: "ai"
 tags: ["ai", "llm", "rag", "vector-db", "retrieval"]
 aliases: ["RAG", "검색 증강 생성", "Retrieval-Augmented Generation"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-14
+sources: ["tools/agents/orchestration-and-memory-decisions"]
 ---
 
 ## 💡 핵심 정의
@@ -22,6 +23,11 @@ LLM이 모든 지식을 파라미터(기억) 안에 암기하고 있는 대신, 
 2. **검색(Retrieval):** 사용자의 자연어 질문이 들어오면 동일한 임베딩 벡터로 변환한 뒤, 코사인 유사도(Cosine Similarity) 등을 통해 가장 유사한 상위 K개의 문서를 발췌합니다.
 3. **증강(Augmentation):** 검색된 문서 조각들을 시스템 프롬프트의 컨텍스트 블록에 주입합니다.
 4. **생성(Generation):** LLM이 프롬프트에 담긴 참고 문서를 바탕으로 최종 답변을 합성합니다.
+
+## 🧭 내 실무 판단 & 사례
+- **개인 위키에는 RAG를 붙이지 않았다.** 노트 수십 개 규모에서 임베딩 파이프라인, 인덱스 갱신, 청킹 규칙을 유지하는 비용이 얻는 것보다 컸다. 대신 원자 노트, 양방향 링크, 빌드 타임 자동 색인, `glossary.json`과 `llms.txt`를 두어 에이전트가 grep과 파일 읽기로 찾아가게 했다. 좋은 파일명과 링크가 이미 인덱스였다.
+- **다시 볼 시점을 정해 두었다.** 노트가 수백 개를 넘어 grep이 실패하기 시작하면 그때 검색 계층을 붙인다. 그 전에 붙이는 것은 콘텐츠보다 인프라에 시간을 쓰는 일이다.
+- 상세: [[tools/agents/orchestration-and-memory-decisions|에이전트 오케스트레이션과 기억 구조 결정]]
 
 ## 🔗 연관 개념
 - [[agentic-rag]] · [[context-window]]

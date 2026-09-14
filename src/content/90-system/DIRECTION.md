@@ -95,3 +95,4 @@ updatedDate: 2026-09-14
 | 2026-09-14 | **Claude 메인, Antigravity 서브.** Claude가 방향·편집·종합을 맡고, 특정 작업을 Antigravity에 Orca 워커나 `agy -p`로 위임 | 사용자 명시. 같은 날 교차 평가로 위임 경로 검증 완료 |
 | 2026-09-14 | 파이프라인 첫 완주(wiki-backlinks): PRD→AC→Spec→구현→결정→QA→리뷰. 부수로 대문자 파일명 프로덕션 404 발견·수정 | 스킬 빈틈 3건 기록(`docs/wiki-backlinks/review.md`) |
 | 2026-09-14 | 파이프라인 두 번째 완주(promotion-candidates). **리뷰를 Antigravity에 위임**해 지적 6건 수용. 승격 대기 건수가 린트에 표시됨 | Claude 메인·Antigravity 서브의 첫 실증. 자기 리뷰가 놓치는 결함(사실 오류 결정 기록, 허위 통과 테스트)을 독립 리뷰가 잡음 |
+| 2026-09-15 | 🧭 보유 10/14. AI 용어 4개는 Orca 운영 기록(tools/agents)에서, lead-time은 사용자 진술에서 승격. feature-flag·agentic-rag·jsi·fabric은 경험 없음으로 비워 둠 | 지어내지 않는다는 원칙. agentic-rag는 도입 예정이라 도입 후 채움 |
