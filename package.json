@@ -7,14 +7,15 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run lint:glossary && astro build",
+    "build": "npm run lint:glossary && astro build && npm run check:links",
     "preview": "astro preview",
     "astro": "astro",
     "lint:glossary": "node scripts/lint-glossary.mjs",
     "glossary:find": "node scripts/find-term.mjs",
     "test": "node scripts/test-lint.mjs && node scripts/lint-skills.mjs",
     "lint:skills": "node scripts/lint-skills.mjs",
-    "glossary:promote": "node scripts/promotion-candidates.mjs"
+    "glossary:promote": "node scripts/promotion-candidates.mjs",
+    "check:links": "node scripts/check-dist-links.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
