@@ -32,6 +32,12 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
 		description: 'AI 시대에 재편되는 테크 시장과 개발자 생존 전략 분석',
 		icon: '📈',
 	},
+	engineering: {
+		slug: 'engineering',
+		name: '엔지니어링 기록',
+		description: '세컨드 브레인, 에이전트 절차, 파이프라인 등 이 저장소를 만들며 남기는 개발 일지',
+		icon: '🛠️',
+	},
 	tips: {
 		slug: 'tips',
 		name: '실전 엔지니어링 팁',

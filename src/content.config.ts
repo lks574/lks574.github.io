@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { CATEGORIES } from './consts';
 
 export const GLOSSARY_CATEGORIES = ['ai', 'architecture', 'client', 'product'] as const;
 export type GlossaryCategory = (typeof GLOSSARY_CATEGORIES)[number];
@@ -13,7 +14,8 @@ const blog = defineCollection({
 		z.object({
 			title: z.string(),
 			description: z.string(),
-			category: z.string().default('General'),
+			// Must be a real category: /category/{slug} routes are generated only for these.
+			category: z.enum(Object.keys(CATEGORIES) as [string, ...string[]]),
 			tags: z.array(z.string()).default([]),
 			// Transform string to Date object
 			pubDate: z.coerce.date(),
