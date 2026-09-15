@@ -1,1 +1,0 @@
-../../src/content/90-system/agents/external-qa-engineer.md

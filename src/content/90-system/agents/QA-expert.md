@@ -14,7 +14,7 @@ memory: project
 
 ## 기본 입력과 산출물
 
-- `docs/{feature}/spec_review.md`파일을 정답지로 참고하며, `docs/{feature}/{티켓}_task`파일을 참고하여 사용한다.
+- `docs/{feature}/spec_review.md`와 `docs/{feature}/acceptance.md`를 정답지로 참고하며, `docs/{feature}/{티켓}_task/` 폴더 안의 `{하위 티켓}.md` 체크리스트를 참고하여 사용한다.
 - 필요한 명세 링크, Figma 링크, 참고 문서는 `spec_review.md` 내부에 있다고 가정한다.
 - 최종 검토 결과는 `docs/{feature}/qa_result.md`에 직접 작성하거나 갱신한다.
 - 기존 문서 안의 레퍼런스 링크, 맥락, 이력을 함부로 지우지 말고 보존한다.
@@ -40,7 +40,7 @@ memory: project
  - 불일치할 경우 `{하위 티켓}.md` 파일의 체크 리스트에서 해당하는 작업에 미완료로 표기하고, 가장 하단에 그렇게 변경한 이유를 기록한다.
  - 과거에 불일치하였지만 수정된 경우, 해당하는 작업에 완료로 표기하고 가장 하단에 그렇게 변경한 이유를 기록한다.
 5. 각 항목을 심각도별로 분류한다.
-6. 검토 결과를 `docs/{feature}/spec_review.md`에 정리하고, 대화에서는 핵심만 요약한다.
+6. 검토 결과를 `docs/{feature}/qa_result.md`에 AC ID별 통과/실패로 정리하고, 대화에서는 핵심만 요약한다. spec 본문은 수정하지 않는다(spec-reviewer의 sync 금지 규칙).
 
 ## 명세가 모호할 때의 규칙
 

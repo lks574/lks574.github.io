@@ -8,7 +8,7 @@
 |---|---|
 | `DIRECTION.md` | 방향 헌장. 목표, 원칙, 비목표, 드리프트 점검, 결정 로그 |
 | `skills/*/SKILL.md` | 공용 스킬 (Agent Skills 규격). 홈의 세 스킬 폴더에 심볼릭 링크로 설치 |
-| `agents/*.md` | 공용 Claude Code 서브에이전트. `~/.claude/agents`에 심볼릭 링크로 설치 |
+| `agents/*.md` | 파이프라인 에이전트 2개(`spec-reviewer`, `QA-expert`). 참조하는 스킬은 모두 이 패키지 안에 있어야 하며 린트가 검사한다 |
 | `agents-md/COMMON.md` | 각 저장소 `AGENTS.md`에 포함시키는 공용 조각 |
 | `templates/` | 위키·블로그 노트 템플릿 |
 | `install.sh` | 이 머신에 스킬·에이전트를 링크. 기존 항목은 `<폴더>-backup-<날짜>/`로 옮긴 뒤 교체 |
@@ -27,7 +27,7 @@
 | `commit-message` | 커밋 | 제목 한 줄 |
 | `add-glossary-term` | 용어집 (이 저장소 전용 경로를 다루지만 두 도구가 같은 원본을 읽도록 여기 둔다) | `src/content/10-wiki/glossary/**` |
 
-회사 내부 식별자가 많은 스킬(`create-task`, `fix-qa-issue-report`, `create-langset`, `generate-project-*`, `ui-design-code`)과 iOS 전용 에이전트(`ios-senior-developer`, `internal-qa-engineer`, `meta-doc-updater`)는 아직 홈 폴더에만 있다. 공개 저장소에 올리기 전에 내부 참조를 원칙 수준으로 정리해야 한다.
+회사 내부 식별자가 많은 스킬(`create-task`, `fix-qa-issue-report`, `create-langset`, `generate-project-*`, `ui-design-code`)과 iOS 전용 에이전트(`planner`, `code-reviewer`, `refactor-cleaner`, `external-qa-engineer`, `ios-senior-developer`, `internal-qa-engineer`, `meta-doc-updater`)는 홈 폴더에만 있다. 이 패키지는 그것들 없이 자기완결적이어야 하므로, 여기 있는 에이전트는 패키지 안의 스킬만 참조한다(`scripts/lint-skills.mjs`가 검사).
 
 ## 적용 범위 (2026-09-14 기준)
 

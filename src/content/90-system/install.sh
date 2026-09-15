@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Link the shared skills and agents from this package into the home folders that
 # Claude Code, the Agent Skills standard, and Codex read. Idempotent. Existing
-# non-link directories with the same name are moved to <name>.bak-<date>, never deleted.
+# non-link entries with the same name are moved to <folder>-backup-<date>/, never deleted.
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STAMP="$(date +%F)"

@@ -33,12 +33,24 @@ for (const f of readdirSync(join(SYS, 'agents')).filter((n) => n.endsWith('.md')
 	if (data.name && `${data.name}.md` !== f) err(file, `name "${data.name}" must equal file name`);
 	if (!data.description) err(file, 'description missing');
 }
+// agents must only reference skills that exist in this package (self-contained)
+const skillNames = new Set(readdirSync(join(SYS, 'skills')).filter((n) => statSync(join(SYS, 'skills', n)).isDirectory()));
+for (const f of readdirSync(join(SYS, 'agents')).filter((n) => n.endsWith('.md'))) {
+	const file = join(SYS, 'agents', f);
+	const fm = readFileSync(file, 'utf8').split('---')[1] ?? '';
+	const m = fm.match(/^skills:\s*\n((?:\s*-\s*.*\n)+)/m);
+	if (!m) continue;
+	for (const ref of m[1].split('\n').map((l) => l.replace(/^\s*-\s*/, '').trim()).filter(Boolean)) {
+		if (!skillNames.has(ref)) err(file, `references skill "${ref}" that is not in 90-system/skills (package must be self-contained)`);
+	}
+}
 // canonical names and forbidden signatures across the package
 const walk = (d, out = []) => { for (const n of readdirSync(d)) { const p = join(d, n); statSync(p).isDirectory() ? walk(p, out) : /\.(md|sh)$/.test(n) && out.push(p); } return out; };
 for (const f of walk(SYS)) {
 	const t = readFileSync(f, 'utf8');
 	if (/spec-review\.md/.test(t)) err(f, 'use the canonical file name spec_review.md');
 	if (/Co-Authored-By: (Claude|Anthropic)/i.test(t) && !/넣지 않는다|금지/.test(t)) err(f, 'contains an automatic signature');
+	if (/\/Users\/[a-z]/.test(t) && !f.endsWith('README.md')) err(f, 'contains a machine-specific absolute path (/Users/...)');
 }
 // required files
 for (const req of ['DIRECTION.md', 'README.md', 'agents-md/COMMON.md', 'install.sh', 'link-repo.sh']) if (!existsSync(join(SYS, req))) err(join(SYS, req), 'required file missing');

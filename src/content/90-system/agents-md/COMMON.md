@@ -14,11 +14,11 @@
 | 1. 문제와 범위 | `write-prd` | `prd.md` |
 | 2. 완료 기준 | `acceptance-criteria` | `acceptance.md` (AC-ID) |
 | 3. 기술 명세 | `spec-reviewer` (+ `spec-checklist`, `tech-spec-template`) | `spec_review.md` |
-| 4. 작업 분해 | `spec-to-ticket`, `create-task` | 티켓, `{티켓}_task.md` |
+| 4. 작업 분해 | `spec-to-ticket` (티켓별 태스크 파일 생성 스킬은 패키지 외, 저장소별 제공) | 티켓, `{티켓}_task/` |
 | 5. 구현 | 플랫폼 개발 에이전트 | 코드, 테스트 |
 | 6. 결정 기록 | `record-decision` | `decisions.md` (append-only) |
-| 7. 리뷰 | `review-checklist`, `code-reviewer` | `review.md` 또는 PR 코멘트 |
-| 8. QA | QA 에이전트, `fix-qa-issue-report` | `qa_result.md`, `qa/` |
+| 7. 리뷰 | `review-checklist` (구현자와 다른 에이전트에 위임) | `review.md` 또는 PR 코멘트 |
+| 8. QA | `QA-expert` 에이전트 (`acceptance.md`의 AC ID를 정답지로) | `qa_result.md` |
 | 9. 커밋 | `commit-message` | 제목 한 줄, Conventional Commits |
 
 - 파일명은 위 표가 정본이다. `spec_review.md`처럼 밑줄 표기를 쓰고, 하이픈 표기는 쓰지 않는다.
