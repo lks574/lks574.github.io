@@ -3,7 +3,7 @@ title: "인공지능 전환(AX)과 암묵지 자산화"
 description: "단순 자동화를 넘어 실무자의 암묵적 판단을 지식 자본으로 전환하고, 에이전틱 오케스트레이션(LangGraph/LlamaIndex)으로 '기억의 통합'을 구현하는 핵심 청사진"
 category: "concepts"
 tags: ["AI", "AX", "암묵지", "에이전틱AI", "LangGraph", "LlamaIndex", "오케스트레이션", "Memory"]
-updatedDate: 2026-09-11
+updatedDate: 2026-09-15
 ---
 
 ## 1. 최신 트렌드: '고정된 파이프라인'에서 '자율적 에이전트'로의 진화
@@ -35,36 +35,22 @@ iOS 네이티브 개발자에서 프로덕트 엔지니어(PE, Product Engineer)
 
 ---
 
-## 3. 개인/사내 구축용 로컬 AI 도구 스택
+## 3. 도구 스택: 지금 채택한 것과 보류한 것
 
-노션(Notion)이나 외부 상용 SaaS 의존도를 낮추고, 보안과 데이터 주권을 지키며 나만의 완벽한 '제2의 뇌'를 로컬/독립 환경에 구축하기 위한 최적의 도구 스택입니다:
+2026년 3월 초안은 로컬 벡터 DB(ChromaDB, Qdrant)와 LangGraph 또는 LlamaIndex Workflows를 "최적의 스택"으로 적었다. 두 달 운영 뒤 결정은 다르다. 근거는 [[tools/agents/orchestration-and-memory-decisions|에이전트 오케스트레이션과 기억 구조 결정]]에 있다.
 
-```
-[ 🎙️ Capture: 날것의 대화 & 회의록 ]
-   └─ Otter.ai, Clova Note (실시간 음성 추론 텍스트화)
-           │
-           ▼
-[ 📁 Storage & Vector DB: 로컬 데이터베이스 ]
-   ├─ 로컬 마크다운 (.md) 파일 (Obsidian Vault)
-   └─ 로컬 벡터 데이터베이스 (ChromaDB, Qdrant)
-           │
-           ▼
-[ 🧠 Orchestration: 동적 추론 레이어 ]
-   └─ LangGraph (상태 기반) OR LlamaIndex Workflows (이벤트 기반)
-           │
-           ▼
-[ 🎯 Deep Twin: 지식 자본화 및 실무 파트너 ]
-```
+| 층 | 채택 (2026-09) | 보류 | 다시 볼 조건 |
+|---|---|---|---|
+| 수집 | 회사 저장소의 PR·트러블슈팅 노트, 세션 메모 | 음성 회의록 자동 전사 | 회의가 주 입력이 될 때 |
+| 저장·검색 | 원자 마크다운 + 양방향 링크 + 빌드 타임 색인(`glossary.json`, `llms.txt`). 에이전트는 grep과 파일 읽기로 찾는다 | 임베딩·벡터 DB | 노트가 수백 개를 넘어 grep이 실패하기 시작할 때 |
+| 오케스트레이션 | Orca 위에서 Claude(메인)·Antigravity(서브) 워커. 브리프는 파일, 결과도 파일 | LangGraph, LlamaIndex Workflows | 다단계 자동 파이프라인을 코드로 고정해야 할 때 |
+| 기억 | 저장소 헌장이 정본, 에이전트 메모리는 포인터. 승격은 린트가 보고 | 자동 요약·통합 워커(sleep-time) | 일화 노트가 주 단위로 쌓일 때 |
 
-1. **수집 도구 (Capture):** Otter.ai, Clova Note 등 음성 인식 AI를 활용해 회의나 실무 중 발생하는 날것의 대화(Live reasoning)를 텍스트로 즉각 변환합니다.
-2. **저장 및 검색 데이터베이스 (Storage & Retrieval):** 텍스트(`.md`) 파일 형태로 로컬 폴더에 보관하고, 이를 의미론적으로 검색할 수 있도록 로컬 벡터 DB(ChromaDB, Qdrant 등)에 임베딩하여 격리 보관합니다.
-3. **오케스트레이션 프레임워크 (Orchestrator):** 에이전트가 위 데이터베이스를 스스로 뒤져 논리를 전개하게 만드는 뼈대로 LangGraph 또는 LlamaIndex Workflows를 채택합니다.
+원칙은 하나다. **개인 규모에서는 좋은 파일명과 링크가 검색 시스템보다 먼저이고, 인프라는 콘텐츠가 그것을 요구할 때 붙인다.**
 
----
+## 4. 참고: 에이전틱 오케스트레이션 프레임워크 비교
 
-## 4. 구현 방식: 에이전틱 오케스트레이션 설계 비교
-
-AI가 고정된 순서 없이 스스로 도구를 선택하고 반복 학습하며 데이터를 찾아오게 만드는 오케스트레이터의 구현은 성격에 따라 두 가지 프레임워크로 나뉩니다.
+아래는 위 표에서 "보류"한 두 프레임워크의 구조 비교다. 지금 쓰지 않지만 다시 볼 조건이 오면 이 비교에서 출발한다.
 
 ```mermaid
 flowchart LR

@@ -8,5 +8,5 @@
 2. 주말이나 여유 시간에 읽어보고, 영구 보존할 가치가 있다면:
    - 개념/이론 ➡️ `10-wiki/concepts/` 로 이동
    - 도구/프레임워크 ➡️ `10-wiki/tools/` 로 이동
-   - 실전 팁 ➡️ `10-wiki/patterns/` 로 이동
+   - 실전 팁·트러블슈팅 ➡️ `10-wiki/tools/{플랫폼}/troubleshooting/` 로 이동 (원칙은 🧭 섹션에, 이후 `npm run glossary:promote`로 용어집 승격)
 3. 쓸모 없어진 메모는 그냥 지우면 됩니다.
